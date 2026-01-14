@@ -4,8 +4,8 @@ A complete Godot 4.4 game bundle featuring three playable dino-themed games with
 
 ## 📅 Last Updated
 **Date:** January 14, 2025  
-**Time:** 00:47 UTC  
-**Version:** 1.0.0
+**Time:** 01:30 UTC  
+**Version:** 1.0.1
 
 ## 🎮 Games Included
 
@@ -106,6 +106,11 @@ dino-bundle/
 GNU General Public License v3.0 - See LICENSE file for details.
 
 ## 🔄 Changelog
+
+### Version 1.0.1 (January 14, 2025)
+- Fixed SubResource parsing errors in all game scene files
+- Moved embedded GDScript SubResources to correct position (before node definitions)
+- All game scenes now load correctly when buttons are pressed
 
 ### Version 1.0.0 (January 14, 2025)
 - Initial project extraction from bundle file

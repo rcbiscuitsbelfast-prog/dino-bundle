@@ -1,8 +1,9 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1768353747
+::res://::1768355186
 dino_bundle (1).txt::TextFile/TextFile::-1::1768351633::0::1::::<><><>0<>0<><>::
-::res://Assets/::1768352166
-read.md::TextFile/TextFile::-1::1768351633::0::1::::<><><>0<>0<><>::
+readme.md::TextFile::-1::1768354750::0::1::::<><><>0<>0<><>::
+::res://Assets/::1768354750
+read.md::TextFile::-1::1768354750::0::1::::<><><>0<>0<><>::
 ::res://Assets/download/::1768352162
 ::res://Assets/download/female/::1768352162
 ::res://Assets/download/female/cole/::1768352160
@@ -499,7 +500,7 @@ blu_dino_walk_side_frakassets..png::CompressedTexture2D/CompressedTexture2D::168
 ::res://dino_explorer/::1768352255
 Enemy.gd::GDScript/GDScript::6502780674472448096::1768352204::0::1::::<>CharacterBody2D<><>0<>0<><>::
 Enemy.tscn::PackedScene/PackedScene::5861352::1768352204::0::1::::<><><>0<>0<><>::res://dino_explorer/Enemy.gd
-ExplorerGame.tscn::PackedScene::329167223313227932::1768352956::0::1::::<><><>0<>0<><>::uid://player::::res://dino_explorer/Player.tscn<>uid://enemy::::res://dino_explorer/Enemy.tscn<>uid://petdino::::res://dino_explorer/PetDino.tscn
+ExplorerGame.tscn::PackedScene/PackedScene::329167223313227932::1768352956::0::1::::<><><>0<>0<><>::uid://player::::res://dino_explorer/Player.tscn<>uid://enemy::::res://dino_explorer/Enemy.tscn<>uid://petdino::::res://dino_explorer/PetDino.tscn
 PetDino.gd::GDScript/GDScript::5379959463384603801::1768352204::0::1::::<>Area2D<><>0<>0<><>::
 PetDino.tscn::PackedScene/PackedScene::23379325936::1768352204::0::1::::<><><>0<>0<><>::res://dino_explorer/PetDino.gd
 Player.gd::GDScript/GDScript::2644796508881690282::1768352204::0::1::::<>CharacterBody2D<><>0<>0<><>::
@@ -511,16 +512,16 @@ Obstacle.gd::GDScript/GDScript::2032982212688599248::1768352204::0::1::::<>Area2
 Obstacle.tscn::PackedScene/PackedScene::737714937138::1768352204::0::1::::<><><>0<>0<><>::res://dino_runner/Obstacle.gd
 PowerUp.gd::GDScript/GDScript::512378488276805708::1768352204::0::1::::<>Area2D<><>0<>0<><>::
 PowerUp.tscn::PackedScene/PackedScene::23837739131::1768352204::0::1::::<><><>0<>0<><>::res://dino_runner/PowerUp.gd
-RunnerGame.tscn::PackedScene::1068607845832732::1768352956::0::1::::<><><>0<>0<><>::uid://dino::::res://dino_runner/Dino.tscn<>uid://obstacle::::res://dino_runner/Obstacle.tscn<>uid://powerup::::res://dino_runner/PowerUp.tscn
+RunnerGame.tscn::PackedScene/PackedScene::1068607845832732::1768352956::0::1::::<><><>0<>0<><>::uid://dino::::res://dino_runner/Dino.tscn<>uid://obstacle::::res://dino_runner/Obstacle.tscn<>uid://powerup::::res://dino_runner/PowerUp.tscn
 ::res://flappy_dino/::1768352255
 Bird.gd::GDScript/GDScript::7375560748399387532::1768352204::0::1::::<>CharacterBody2D<><>0<>0<><>::
 Bird.tscn::PackedScene/PackedScene::49133::1768352204::0::1::::<><><>0<>0<><>::res://flappy_dino/Bird.gd
-FlappyGame.tscn::PackedScene::323252582692076::1768352956::0::1::::<><><>0<>0<><>::uid://bird::::res://flappy_dino/Bird.tscn<>uid://pipepair::::res://flappy_dino/PipePair.tscn
+FlappyGame.tscn::PackedScene/PackedScene::323252582692076::1768352956::0::1::::<><><>0<>0<><>::uid://bird::::res://flappy_dino/Bird.tscn<>uid://pipepair::::res://flappy_dino/PipePair.tscn
 PipePair.gd::GDScript/GDScript::504880225349007609::1768352204::0::1::::<>Node2D<><>0<>0<><>::
 PipePair.tscn::PackedScene/PackedScene::800896154041::1768352204::0::1::::<><><>0<>0<><>::res://flappy_dino/PipePair.gd
-::res://launcher/::1768353221
+::res://launcher/::1768354749
 Launcher.gd::GDScript/GDScript::3355282767588717796::1768352204::0::1::::<>Control<><>0<>0<><>::
-Launcher.tscn::PackedScene::578683019285::1768353221::0::1::::<><><>0<>0<><>::uid://bn2latu7utchw::::res://launcher/Launcher.gd
+Launcher.tscn::PackedScene::578683019285::1768354749::0::1::::<><><>0<>0<><>::uid://bn2latu7utchw::::res://launcher/Launcher.gd
 ::res://shared/::1768352255
 AdManager.gd::GDScript/GDScript::4375339450592384133::1768352204::0::1::::<>Node<><>0<>0<><>::
 colors.gd::GDScript/GDScript::7287848588105811883::1768352204::0::1::::<>Node<><>0<>0<><>::
