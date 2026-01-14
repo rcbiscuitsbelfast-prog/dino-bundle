@@ -28,9 +28,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = -80.0
+offset_top = -100.0
 offset_right = 100.0
-offset_bottom = 80.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
@@ -52,6 +52,16 @@ text = "Play Dino Runner"
 layout_mode = 2
 text = "Play Dino Explorer"
 
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "⚙️ Settings"
+
+[node name="CreditsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Credits"
+
 [connection signal="pressed" from="VBoxContainer/FlappyButton" to="." method="_on_flappy_pressed"]
 [connection signal="pressed" from="VBoxContainer/RunnerButton" to="." method="_on_runner_pressed"]
 [connection signal="pressed" from="VBoxContainer/ExplorerButton" to="." method="_on_explorer_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/CreditsButton" to="." method="_on_credits_pressed"]
