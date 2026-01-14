@@ -348,12 +348,12 @@ text = "Restart"
 layout_mode = 2
 text = "Main Menu"
 
-[connection signal="pressed" from="UI/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="menu_requested" from="PauseMenu" to="." method="_on_pause_menu_menu_requested"]
 [connection signal="restart_requested" from="PauseMenu" to="." method="_on_pause_menu_restart_requested"]
 [connection signal="resume_requested" from="PauseMenu" to="." method="_on_pause_menu_resume_requested"]
 [connection signal="settings_requested" from="PauseMenu" to="." method="_on_pause_menu_settings_requested"]
 [connection signal="timeout" from="HatchTimer" to="." method="_on_hatch_timer_timeout"]
+[connection signal="pressed" from="UI/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
