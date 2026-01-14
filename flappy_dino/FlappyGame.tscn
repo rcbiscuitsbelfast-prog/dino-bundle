@@ -157,6 +157,9 @@ func _on_pause_menu_settings_requested() -> void:
 
 func _on_pause_menu_menu_requested() -> void:
 	_on_menu_pressed()
+
+func _on_pause_button_pressed() -> void:
+	pause_menu.pause_game()
 "
 
 [node name="FlappyGame" type="Node2D"]
@@ -194,6 +197,13 @@ visible = false
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 3
 layer = 10
+
+[node name="PauseButton" type="Button" parent="UI"]
+offset_left = 720.0
+offset_top = 20.0
+offset_right = 780.0
+offset_bottom = 60.0
+text = "Pause"
 
 [node name="ScoreLabel" type="Label" parent="UI"]
 offset_left = 20.0
@@ -250,6 +260,7 @@ layout_mode = 2
 text = "Main Menu"
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="pressed" from="UI/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="menu_requested" from="PauseMenu" to="." method="_on_pause_menu_menu_requested"]
 [connection signal="restart_requested" from="PauseMenu" to="." method="_on_pause_menu_restart_requested"]
 [connection signal="resume_requested" from="PauseMenu" to="." method="_on_pause_menu_resume_requested"]
