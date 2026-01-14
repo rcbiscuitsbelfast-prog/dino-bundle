@@ -8,10 +8,11 @@
 
 config_version=5
 
-
 [application]
 
-config/name="Dino Game Bundle"run/main_scene="res://launcher/Launcher.tscn"config/features=PackedStringArray("4.4", "Forward Plus")
+config/name="Dino Game Bundle"
+run/main_scene="res://launcher/Launcher.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
 
 [autoload]
 
