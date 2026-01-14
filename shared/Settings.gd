@@ -101,7 +101,11 @@ func _on_haptics_toggled(enabled: bool) -> void:
 
 func _on_back_pressed() -> void:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	get_tree().change_scene_to_file("res://launcher/Launcher.tscn")
+=======
+	get_tree().change_scene_to_file("res://launcher/Launcher.tscn")
+>>>>>>> Stashed changes
 =======
 	get_tree().change_scene_to_file("res://launcher/Launcher.tscn")
 >>>>>>> Stashed changes
