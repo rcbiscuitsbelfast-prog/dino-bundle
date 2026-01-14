@@ -80,11 +80,17 @@ func _on_settings_volume_changed(volume: float) -> void:
 
 func _on_music_toggled(enabled: bool) -> void:
 	SettingsManager.set_music_enabled(enabled)
-	music_toggle.text = enabled ? "On" : "Off"
+	if enabled:
+		music_toggle.text = "On"
+	else:
+		music_toggle.text = "Off"
 
 func _on_sfx_toggled(enabled: bool) -> void:
 	SettingsManager.set_sfx_enabled(enabled)
-	sfx_toggle.text = enabled ? "On" : "Off"
+	if enabled:
+		sfx_toggle.text = "On"
+	else:
+		sfx_toggle.text = "Off"
 
 func _on_difficulty_changed(index: int) -> void:
 	var difficulties = ["Easy", "Normal", "Hard"]
@@ -93,11 +99,17 @@ func _on_difficulty_changed(index: int) -> void:
 
 func _on_tutorial_toggled(enabled: bool) -> void:
 	SettingsManager.set_tutorial_enabled(enabled)
-	tutorial_toggle.text = enabled ? "Show" : "Hide"
+	if enabled:
+		tutorial_toggle.text = "Show"
+	else:
+		tutorial_toggle.text = "Hide"
 
 func _on_haptics_toggled(enabled: bool) -> void:
 	SettingsManager.set_haptics_enabled(enabled)
-	haptics_toggle.text = enabled ? "On" : "Off"
+	if enabled:
+		haptics_toggle.text = "On"
+	else:
+		haptics_toggle.text = "Off"
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://launcher/Launcher.tscn")
