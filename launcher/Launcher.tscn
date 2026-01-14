@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://launcher"]
+
+[ext_resource type="Script" uid="uid://bn2latu7utchw" path="res://launcher/Launcher.gd" id="1"]
+
+[node name="Launcher" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.53, 0.81, 0.92, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "🦖 DINO GAME BUNDLE"
+horizontal_alignment = 1
+
+[node name="FlappyButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Flappy Dino"
+
+[node name="RunnerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Dino Runner"
+
+[node name="ExplorerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Dino Explorer"
+
+[connection signal="pressed" from="VBoxContainer/FlappyButton" to="." method="_on_flappy_pressed"]
+[connection signal="pressed" from="VBoxContainer/RunnerButton" to="." method="_on_runner_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExplorerButton" to="." method="_on_explorer_pressed"]

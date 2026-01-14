@@ -1,0 +1,193 @@
+[gd_scene load_steps=3 format=3 uid="uid://flappygame"]
+
+[ext_resource type="PackedScene" uid="uid://bird" path="res://flappy_dino/Bird.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://pipepair" path="res://flappy_dino/PipePair.tscn" id="2"]
+
+[node name="FlappyGame" type="Node2D"]
+script = SubResource("GDScript_1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(400, 300)
+
+[node name="FarBackground" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.4, 0.6, 0.8, 1)
+
+[node name="MidBackground" type="ColorRect" parent="."]
+offset_top = 400.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.3, 0.5, 0.3, 1)
+
+[node name="MainBackground" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.53, 0.81, 0.92, 0.5)
+
+[node name="Bird" parent="." instance=ExtResource("1")]
+position = Vector2(150, 300)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 60.0
+text = "Score: 0"
+
+[node name="LivesLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 90.0
+text = "Lives: 3"
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Game Over!"
+horizontal_alignment = 1
+
+[node name="WatchAdButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Watch Ad - Get 3 Lives"
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends Node2D
+
+# 🎮 FLAPPY DINO - MAIN GAME SCRIPT
+# This controls the entire Flappy Dino game
+
+# ⚙️ GAME SETTINGS - EASY TO CUSTOMIZE!
+# Change spawn_interval to control how often pipes appear (in seconds)
+const PIPE_SPAWN_INTERVAL = 2.0
+
+# Change these to adjust scrolling background layers
+const FAR_BG_SPEED = 20.0  # Slowest layer (mountains/sky)
+const MID_BG_SPEED = 40.0  # Middle layer (trees/hills)
+
+@onready var bird: CharacterBody2D = $Bird
+@onready var spawn_timer: Timer = $SpawnTimer
+@onready var score_label: Label = $UI/ScoreLabel
+@onready var lives_label: Label = $UI/LivesLabel
+@onready var game_over_panel: Panel = $UI/GameOverPanel
+@onready var far_bg: ColorRect = $FarBackground
+@onready var mid_bg: ColorRect = $MidBackground
+
+var pipe_scene = preload(\"res://flappy_dino/PipePair.tscn\")
+var score: int = 0
+var lives: int = 3
+
+# Parallax scrolling positions
+var far_bg_offset: float = 0.0
+var mid_bg_offset: float = 0.0
+
+func _ready() -> void:
+	AdManager.show_banner_ad()
+	spawn_timer.wait_time = PIPE_SPAWN_INTERVAL
+
+func _process(delta: float) -> void:
+	# 🎨 PARALLAX SCROLLING - Creates depth effect
+	# The far background scrolls slowest, mid background faster
+	far_bg_offset -= FAR_BG_SPEED * delta
+	mid_bg_offset -= MID_BG_SPEED * delta
+	
+	# Reset positions to create infinite scroll
+	if far_bg_offset <= -800:
+		far_bg_offset = 0
+	if mid_bg_offset <= -800:
+		mid_bg_offset = 0
+	
+	# Apply offsets
+	far_bg.position.x = far_bg_offset
+	mid_bg.position.x = mid_bg_offset
+	
+	# Check if bird hits top or bottom of screen
+	if bird.position.y < 0 or bird.position.y > 600:
+		take_damage()
+
+func _on_spawn_timer_timeout() -> void:
+	# Create new pipe obstacle
+	var pipe = pipe_scene.instantiate()
+	pipe.position = Vector2(850, 300)
+	add_child(pipe)
+	score += 1
+	score_label.text = \"Score: \" + str(score)
+
+func take_damage() -> void:
+	lives -= 1
+	lives_label.text = \"Lives: \" + str(lives)
+	
+	if lives <= 0:
+		game_over()
+	else:
+		# Reset bird position
+		bird.position = Vector2(150, 300)
+		bird.velocity = Vector2.ZERO
+
+func game_over() -> void:
+	get_tree().paused = true
+	game_over_panel.visible = true
+	spawn_timer.stop()
+
+func _on_watch_ad_pressed() -> void:
+	if AdManager.is_reward_ad_ready():
+		AdManager.show_reward_ad()
+		await AdManager.ad_rewarded
+		# Grant 3 extra lives
+		lives += 3
+		lives_label.text = \"Lives: \" + str(lives)
+		game_over_panel.visible = false
+		get_tree().paused = false
+		spawn_timer.start()
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_menu_pressed() -> void:
+	get_tree().paused = false
+	AdManager.hide_banner_ad()
+	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+"
