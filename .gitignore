@@ -1,0 +1,18 @@
+.godot/
+.import/
+*.import
+
+# Godot exports
+/export/
+*.pck
+*.zip
+*.exe
+*.dmg
+*.apk
+*.aab
+
+# OS/editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

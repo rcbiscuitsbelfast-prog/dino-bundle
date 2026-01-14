@@ -12,7 +12,8 @@ func _physics_process(delta: float) -> void:
     velocity.y += GRAVITY * delta
     
     # Check for flap input (both keyboard and touch)
-    if TouchInputHandler.check_flap_input():
+    # Only allow flapping if game has started (not paused)
+    if not get_tree().paused and TouchInputHandler.check_flap_input():
         velocity.y = FLAP_STRENGTH
     
     move_and_slide()

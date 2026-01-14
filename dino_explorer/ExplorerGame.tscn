@@ -64,6 +64,9 @@ func spawn_enemies() -> void:
         add_child(enemy)
 
 func _process(_delta: float) -> void:
+    # Camera follows player
+    $Camera2D.global_position = player.global_position
+    
     # Check collision with enemies
     for enemy in get_tree().get_nodes_in_group(\"enemy\"):
         if enemy is CharacterBody2D:
@@ -107,6 +110,8 @@ func game_over() -> void:
     get_tree().paused = true
     game_over_panel.visible = true
     pet_spawn_timer.stop()
+    pause_menu.is_paused = false
+    pause_menu.hide_pause_menu()
 
 func _on_watch_ad_pressed() -> void:
     if AdManager.is_reward_ad_ready():
@@ -147,7 +152,13 @@ func _on_pause_menu_menu_requested() -> void:
 script = SubResource("GDScript_1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(400, 300)
+offset = Vector2(0, 0)
+limit_left = 0
+limit_top = 0
+limit_right = 800
+limit_bottom = 600
+position_smoothing_enabled = true
+position_smoothing_speed = 5.0
 
 [node name="Background" type="ColorRect" parent="."]
 offset_right = 800.0
@@ -208,9 +219,11 @@ color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="PetSpawnTimer" type="Timer" parent="."]
 wait_time = 10.0
-autostart = true
+autostart = false
 
 [node name="UI" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 10
 
 [node name="ScoreLabel" type="Label" parent="UI"]
 offset_left = 20.0
