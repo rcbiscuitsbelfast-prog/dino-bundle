@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://runnergame"]
+[gd_scene load_steps=6 format=3 uid="uid://runnergame"]
 
 [ext_resource type="PackedScene" uid="uid://dino" path="res://dino_runner/Dino.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://c14h7d4h3as7n" path="res://Assets/Flat Nature Art.png" id="1_wgvdd"]
 [ext_resource type="PackedScene" uid="uid://pausemenu" path="res://shared/PauseMenu.tscn" id="4"]
 
 [sub_resource type="GDScript" id="GDScript_1"]
@@ -217,14 +218,13 @@ color = Color(0.53, 0.81, 0.92, 1)
 position = Vector2(400, 550)
 shape = SubResource("RectangleShape2D_1")
 
-[node name="GroundVisual" type="ColorRect" parent="."]
-offset_top = 500.0
-offset_right = 800.0
-offset_bottom = 550.0
-color = Color(0.4, 0.3, 0.2, 1)
+[node name="FlatNatureArt" type="Sprite2D" parent="Ground"]
+position = Vector2(410, 309)
+scale = Vector2(0.65, 0.852778)
+texture = ExtResource("1_wgvdd")
 
 [node name="Dino" parent="." instance=ExtResource("1")]
-position = Vector2(100, 480)
+position = Vector2(100, 483)
 
 [node name="PauseMenu" parent="." instance=ExtResource("4")]
 
@@ -243,9 +243,9 @@ layer = 10
 
 [node name="PauseButton" type="Button" parent="UI"]
 offset_left = 720.0
-offset_top = 20.0
+offset_top = 32.0
 offset_right = 780.0
-offset_bottom = 60.0
+offset_bottom = 72.0
 text = "Pause"
 
 [node name="ScoreLabel" type="Label" parent="UI"]
@@ -253,6 +253,7 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 120.0
 offset_bottom = 60.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Score: 0"
 
 [node name="LivesLabel" type="Label" parent="UI"]
@@ -260,6 +261,7 @@ offset_left = 20.0
 offset_top = 50.0
 offset_right = 120.0
 offset_bottom = 90.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Lives: 3"
 
 [node name="SpeedLabel" type="Label" parent="UI"]
@@ -267,13 +269,15 @@ offset_left = 20.0
 offset_top = 80.0
 offset_right = 160.0
 offset_bottom = 120.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Speed: x1.0"
 
 [node name="JumpsLabel" type="Label" parent="UI"]
 offset_left = 680.0
-offset_top = 20.0
+offset_top = 5.0
 offset_right = 780.0
-offset_bottom = 60.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Jumps: 2"
 horizontal_alignment = 2
 
