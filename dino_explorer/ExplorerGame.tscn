@@ -9,24 +9,36 @@ script/source = "extends Node2D
 # 🎮 DINO EXPLORER - MAIN GAME SCRIPT
 
 # ⚙️ GAME SETTINGS - CUSTOMIZE HERE!
-const ENEMY_COUNT = 3  # Number of aggressive dinos
-const PET_SPAWN_TIME = 10.0  # How often friendly dinos appear
-const DAMAGE_COOLDOWN = 1.0  # Seconds of invincibility after hit
+const TOTAL_DINOS = 24  # Total dinos to spawn at start
+const AGGRESSIVE_CHANCE = 0.2  # 20% aggressive, 80% nice
+const DAMAGE_COOLDOWN = 1.5  # Seconds of invincibility after hit
+const HATCH_INTERVAL_MIN = 180.0  # 3 minutes
+const HATCH_INTERVAL_MAX = 300.0  # 5 minutes
 
 @onready var player: CharacterBody2D = $Player
-@onready var pet_spawn_timer: Timer = $PetSpawnTimer
 @onready var score_label: Label = $UI/ScoreLabel
 @onready var lives_label: Label = $UI/LivesLabel
 @onready var game_over_panel: Panel = $UI/GameOverPanel
 @onready var pause_menu = $PauseMenu
+@onready var hatch_timer: Timer = $HatchTimer
+@onready var dinos_container: Node2D = $Dinos
+@onready var nests_container: Node2D = $Nests
 
 var enemy_scene = preload(\"res://dino_explorer/Enemy.tscn\")
 var pet_scene = preload(\"res://dino_explorer/PetDino.tscn\")
+var nest_scene = preload(\"res://dino_explorer/Nest.tscn\")
 var tutorial_scene = preload(\"res://dino_explorer/ExplorerTutorial.tscn\")
 
 var dinos_petted: int = 0
 var lives: int = 3
-var can_take_damage: bool = true
+var is_invincible: bool = false
+var nests: Array = []
+
+# Dino type list
+var dino_types = [
+    \"nico\", \"olaf\", \"doux\", \"kuro\", \"mort\", \"sena\",
+    \"loki\", \"cole\", \"tard\", \"kira\", \"vita\", \"mono\"
+]
 
 func _ready() -> void:
     AdManager.show_banner_ad()
@@ -38,68 +50,115 @@ func _ready() -> void:
         start_game()
 
 func start_game() -> void:
-    spawn_enemies()
-    pet_spawn_timer.wait_time = PET_SPAWN_TIME
-    pet_spawn_timer.start()
+    spawn_fixed_dinos()
+    spawn_nests()
+    hatch_timer.wait_time = randf_range(HATCH_INTERVAL_MIN, HATCH_INTERVAL_MAX)
+    hatch_timer.start()
 
 func show_tutorial() -> void:
     var tutorial = tutorial_scene.instantiate()
     add_child(tutorial)
     TutorialManager.show_tutorial(\"explorer\")
 
-func spawn_enemies() -> void:
-    # 🦖 SPAWN AGGRESSIVE DINOS
-    for i in range(ENEMY_COUNT):
-        var enemy = enemy_scene.instantiate()
-        # Random position away from player
-        var random_pos = Vector2(
-            randf_range(100, 700),
-            randf_range(100, 500)
+func spawn_fixed_dinos() -> void:
+    # Spawn dinos at fixed positions across the world
+    var grid_cols = 6
+    var grid_rows = 4
+    var spacing_x = 2400.0 / (grid_cols + 1)
+    var spacing_y = 1800.0 / (grid_rows + 1)
+    
+    for row in range(grid_rows):
+        for col in range(grid_cols):
+            var pos = Vector2(
+                spacing_x * (col + 1) + randf_range(-50, 50),
+                spacing_y * (row + 1) + randf_range(-50, 50)
+            )
+            
+            # Avoid spawning too close to player
+            if pos.distance_to(player.position) < 200:
+                continue
+            
+            var is_aggressive = randf() < AGGRESSIVE_CHANCE
+            
+            if is_aggressive:
+                var enemy = enemy_scene.instantiate()
+                enemy.position = pos
+                enemy.set_player(player)
+                enemy.add_to_group(\"enemy\")
+                dinos_container.add_child(enemy)
+            else:
+                var pet = pet_scene.instantiate()
+                pet.position = pos
+                pet.petted.connect(_on_dino_petted)
+                pet.add_to_group(\"pet\")
+                dinos_container.add_child(pet)
+
+func spawn_nests() -> void:
+    # Spawn nests at fixed positions
+    for i in range(8):
+        var nest = nest_scene.instantiate()
+        var pos = Vector2(
+            randf_range(200, 2200),
+            randf_range(200, 1600)
         )
-        enemy.position = random_pos
-        enemy.set_player(player)
-        enemy.add_to_group(\"enemy\")
-        add_child(enemy)
+        nest.position = pos
+        nests_container.add_child(nest)
+        nests.append(nest)
 
 func _process(_delta: float) -> void:
     # Camera follows player
     $Camera2D.global_position = player.global_position
     
     # Check collision with enemies
-    for enemy in get_tree().get_nodes_in_group(\"enemy\"):
-        if enemy is CharacterBody2D:
-            var distance = player.position.distance_to(enemy.position)
-            if distance < 30 and can_take_damage:
-                take_damage()
+    if not is_invincible:
+        for enemy in get_tree().get_nodes_in_group(\"enemy\"):
+            if enemy is CharacterBody2D:
+                var distance = player.position.distance_to(enemy.position)
+                if distance < 30:
+                    take_damage()
+                    break
 
-func _on_pet_spawn_timer_timeout() -> void:
-    # 💚 SPAWN FRIENDLY DINO TO PET
-    var pet = pet_scene.instantiate()
-    # Random position
-    pet.position = Vector2(
-        randf_range(100, 700),
-        randf_range(100, 500)
-    )
-    pet.petted.connect(_on_dino_petted)
-    add_child(pet)
+func _on_hatch_timer_timeout() -> void:
+    # Spawn new dino from random nest
+    if nests.size() > 0:
+        var random_nest = nests[randi() % nests.size()]
+        var is_aggressive = randf() < AGGRESSIVE_CHANCE
+        
+        if is_aggressive:
+            var enemy = enemy_scene.instantiate()
+            enemy.position = random_nest.position
+            enemy.set_player(player)
+            enemy.add_to_group(\"enemy\")
+            dinos_container.add_child(enemy)
+        else:
+            var pet = pet_scene.instantiate()
+            pet.position = random_nest.position
+            pet.petted.connect(_on_dino_petted)
+            pet.add_to_group(\"pet\")
+            dinos_container.add_child(pet)
+    
+    hatch_timer.wait_time = randf_range(HATCH_INTERVAL_MIN, HATCH_INTERVAL_MAX)
 
 func _on_dino_petted() -> void:
     dinos_petted += 1
     score_label.text = \"Dinos Petted: \" + str(dinos_petted)
 
 func take_damage() -> void:
-    if not can_take_damage:
+    if is_invincible:
         return
     
     lives -= 1
     lives_label.text = \"Lives: \" + str(lives)
-    can_take_damage = false
+    is_invincible = true
     
-    # Flash player
-    player.modulate = Color(1, 0, 0, 0.5)
-    await get_tree().create_timer(DAMAGE_COOLDOWN).timeout
-    player.modulate = Color(1, 1, 1, 1)
-    can_take_damage = true
+    # Flash player red
+    for i in range(6):
+        player.modulate = Color(1, 0, 0, 0.5)
+        await get_tree().create_timer(0.25).timeout
+        player.modulate = Color(1, 1, 1, 1)
+        await get_tree().create_timer(0.25).timeout
+    
+    is_invincible = false
     
     if lives <= 0:
         game_over()
@@ -107,7 +166,7 @@ func take_damage() -> void:
 func game_over() -> void:
     get_tree().paused = true
     game_over_panel.visible = true
-    pet_spawn_timer.stop()
+    hatch_timer.stop()
     pause_menu.is_paused = false
     pause_menu.hide_pause_menu()
 
@@ -119,7 +178,7 @@ func _on_watch_ad_pressed() -> void:
         lives_label.text = \"Lives: \" + str(lives)
         game_over_panel.visible = false
         get_tree().paused = false
-        pet_spawn_timer.start()
+        hatch_timer.start()
 
 func _on_restart_pressed() -> void:
     get_tree().paused = false
@@ -132,7 +191,6 @@ func _on_menu_pressed() -> void:
 
 # Pause menu integration
 func _on_pause_menu_resume_requested() -> void:
-    # Resume game logic is handled by pause menu itself
     pass
 
 func _on_pause_menu_restart_requested() -> void:
@@ -153,43 +211,47 @@ script = SubResource("GDScript_1")
 offset = Vector2(0, 0)
 limit_left = 0
 limit_top = 0
-limit_right = 800
-limit_bottom = 600
+limit_right = 2400
+limit_bottom = 1800
 position_smoothing_enabled = true
 position_smoothing_speed = 5.0
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 800.0
-offset_bottom = 600.0
+offset_right = 2400.0
+offset_bottom = 1800.0
 color = Color(0.53, 0.81, 0.92, 1)
 
 [node name="Player" parent="." instance=ExtResource("1")]
-position = Vector2(400, 300)
+position = Vector2(1200, 900)
 
 [node name="PauseMenu" parent="." instance=ExtResource("4")]
+
+[node name="Dinos" type="Node2D" parent="."]
+
+[node name="Nests" type="Node2D" parent="."]
 
 [node name="Walls" type="Node2D" parent="."]
 
 [node name="TopWall" type="ColorRect" parent="Walls"]
-offset_right = 800.0
+offset_right = 2400.0
 offset_bottom = 20.0
 color = Color(0.4, 0.3, 0.2, 1)
 
 [node name="BottomWall" type="ColorRect" parent="Walls"]
-offset_top = 580.0
-offset_right = 800.0
-offset_bottom = 600.0
+offset_top = 1780.0
+offset_right = 2400.0
+offset_bottom = 1800.0
 color = Color(0.4, 0.3, 0.2, 1)
 
 [node name="LeftWall" type="ColorRect" parent="Walls"]
 offset_right = 20.0
-offset_bottom = 600.0
+offset_bottom = 1800.0
 color = Color(0.4, 0.3, 0.2, 1)
 
 [node name="RightWall" type="ColorRect" parent="Walls"]
-offset_left = 780.0
-offset_right = 800.0
-offset_bottom = 600.0
+offset_left = 2380.0
+offset_right = 2400.0
+offset_bottom = 1800.0
 color = Color(0.4, 0.3, 0.2, 1)
 
 [node name="Obstacles" type="Node2D" parent="."]
@@ -215,8 +277,8 @@ offset_right = 180.0
 offset_bottom = 500.0
 color = Color(0.5, 0.5, 0.5, 1)
 
-[node name="PetSpawnTimer" type="Timer" parent="."]
-wait_time = 10.0
+[node name="HatchTimer" type="Timer" parent="."]
+wait_time = 180.0
 autostart = false
 
 [node name="UI" type="CanvasLayer" parent="."]
@@ -281,7 +343,7 @@ text = "Main Menu"
 [connection signal="restart_requested" from="PauseMenu" to="." method="_on_pause_menu_restart_requested"]
 [connection signal="resume_requested" from="PauseMenu" to="." method="_on_pause_menu_resume_requested"]
 [connection signal="settings_requested" from="PauseMenu" to="." method="_on_pause_menu_settings_requested"]
-[connection signal="timeout" from="PetSpawnTimer" to="." method="_on_pet_spawn_timer_timeout"]
+[connection signal="timeout" from="HatchTimer" to="." method="_on_hatch_timer_timeout"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
