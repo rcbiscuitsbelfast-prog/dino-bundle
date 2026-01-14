@@ -3,96 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://bird" path="res://flappy_dino/Bird.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://pipepair" path="res://flappy_dino/PipePair.tscn" id="2"]
 
-[node name="FlappyGame" type="Node2D"]
-script = SubResource("GDScript_1")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(400, 300)
-
-[node name="FarBackground" type="ColorRect" parent="."]
-offset_right = 800.0
-offset_bottom = 600.0
-color = Color(0.4, 0.6, 0.8, 1)
-
-[node name="MidBackground" type="ColorRect" parent="."]
-offset_top = 400.0
-offset_right = 800.0
-offset_bottom = 600.0
-color = Color(0.3, 0.5, 0.3, 1)
-
-[node name="MainBackground" type="ColorRect" parent="."]
-offset_right = 800.0
-offset_bottom = 600.0
-color = Color(0.53, 0.81, 0.92, 0.5)
-
-[node name="Bird" parent="." instance=ExtResource("1")]
-position = Vector2(150, 300)
-
-[node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 2.0
-autostart = true
-
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="ScoreLabel" type="Label" parent="UI"]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 120.0
-offset_bottom = 60.0
-text = "Score: 0"
-
-[node name="LivesLabel" type="Label" parent="UI"]
-offset_left = 20.0
-offset_top = 50.0
-offset_right = 120.0
-offset_bottom = 90.0
-text = "Lives: 3"
-
-[node name="GameOverPanel" type="Panel" parent="UI"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -100.0
-offset_right = 150.0
-offset_bottom = 100.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBox" type="VBoxContainer" parent="UI/GameOverPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel/VBox"]
-layout_mode = 2
-text = "Game Over!"
-horizontal_alignment = 1
-
-[node name="WatchAdButton" type="Button" parent="UI/GameOverPanel/VBox"]
-layout_mode = 2
-text = "Watch Ad - Get 3 Lives"
-
-[node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
-layout_mode = 2
-text = "Restart"
-
-[node name="MenuButton" type="Button" parent="UI/GameOverPanel/VBox"]
-layout_mode = 2
-text = "Main Menu"
-
-[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
-[connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
-[connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
-
 [sub_resource type="GDScript" id="GDScript_1"]
 script/source = "extends Node2D
 
@@ -191,3 +101,93 @@ func _on_menu_pressed() -> void:
 	AdManager.hide_banner_ad()
 	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
 "
+
+[node name="FlappyGame" type="Node2D"]
+script = SubResource("GDScript_1")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(400, 300)
+
+[node name="FarBackground" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.4, 0.6, 0.8, 1)
+
+[node name="MidBackground" type="ColorRect" parent="."]
+offset_top = 400.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.3, 0.5, 0.3, 1)
+
+[node name="MainBackground" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.53, 0.81, 0.92, 0.5)
+
+[node name="Bird" parent="." instance=ExtResource("1")]
+position = Vector2(150, 300)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 60.0
+text = "Score: 0"
+
+[node name="LivesLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 90.0
+text = "Lives: 3"
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Game Over!"
+horizontal_alignment = 1
+
+[node name="WatchAdButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Watch Ad - Get 3 Lives"
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]

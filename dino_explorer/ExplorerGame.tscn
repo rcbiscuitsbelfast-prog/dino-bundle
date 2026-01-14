@@ -4,6 +4,113 @@
 [ext_resource type="PackedScene" uid="uid://enemy" path="res://dino_explorer/Enemy.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://petdino" path="res://dino_explorer/PetDino.tscn" id="3"]
 
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends Node2D
+
+# 🎮 DINO EXPLORER - MAIN GAME SCRIPT
+
+# ⚙️ GAME SETTINGS - CUSTOMIZE HERE!
+const ENEMY_COUNT = 3  # Number of aggressive dinos
+const PET_SPAWN_TIME = 10.0  # How often friendly dinos appear
+const DAMAGE_COOLDOWN = 1.0  # Seconds of invincibility after hit
+
+@onready var player: CharacterBody2D = $Player
+@onready var pet_spawn_timer: Timer = $PetSpawnTimer
+@onready var score_label: Label = $UI/ScoreLabel
+@onready var lives_label: Label = $UI/LivesLabel
+@onready var game_over_panel: Panel = $UI/GameOverPanel
+
+var enemy_scene = preload(\"res://dino_explorer/Enemy.tscn\")
+var pet_scene = preload(\"res://dino_explorer/PetDino.tscn\")
+
+var dinos_petted: int = 0
+var lives: int = 3
+var can_take_damage: bool = true
+
+func _ready() -> void:
+	AdManager.show_banner_ad()
+	spawn_enemies()
+	pet_spawn_timer.wait_time = PET_SPAWN_TIME
+
+func spawn_enemies() -> void:
+	# 🦖 SPAWN AGGRESSIVE DINOS
+	for i in range(ENEMY_COUNT):
+		var enemy = enemy_scene.instantiate()
+		# Random position away from player
+		var random_pos = Vector2(
+			randf_range(100, 700),
+			randf_range(100, 500)
+		)
+		enemy.position = random_pos
+		enemy.set_player(player)
+		enemy.add_to_group(\"enemy\")
+		add_child(enemy)
+
+func _process(_delta: float) -> void:
+	# Check collision with enemies
+	for enemy in get_tree().get_nodes_in_group(\"enemy\"):
+		if enemy is CharacterBody2D:
+			var distance = player.position.distance_to(enemy.position)
+			if distance < 30 and can_take_damage:
+				take_damage()
+
+func _on_pet_spawn_timer_timeout() -> void:
+	# 💚 SPAWN FRIENDLY DINO TO PET
+	var pet = pet_scene.instantiate()
+	# Random position
+	pet.position = Vector2(
+		randf_range(100, 700),
+		randf_range(100, 500)
+	)
+	pet.petted.connect(_on_dino_petted)
+	add_child(pet)
+
+func _on_dino_petted() -> void:
+	dinos_petted += 1
+	score_label.text = \"Dinos Petted: \" + str(dinos_petted)
+
+func take_damage() -> void:
+	if not can_take_damage:
+		return
+	
+	lives -= 1
+	lives_label.text = \"Lives: \" + str(lives)
+	can_take_damage = false
+	
+	# Flash player
+	player.modulate = Color(1, 0, 0, 0.5)
+	await get_tree().create_timer(DAMAGE_COOLDOWN).timeout
+	player.modulate = Color(1, 1, 1, 1)
+	can_take_damage = true
+	
+	if lives <= 0:
+		game_over()
+
+func game_over() -> void:
+	get_tree().paused = true
+	game_over_panel.visible = true
+	pet_spawn_timer.stop()
+
+func _on_watch_ad_pressed() -> void:
+	if AdManager.is_reward_ad_ready():
+		AdManager.show_reward_ad()
+		await AdManager.ad_rewarded
+		lives += 3
+		lives_label.text = \"Lives: \" + str(lives)
+		game_over_panel.visible = false
+		get_tree().paused = false
+		pet_spawn_timer.start()
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_menu_pressed() -> void:
+	get_tree().paused = false
+	AdManager.hide_banner_ad()
+	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+"
+
 [node name="ExplorerGame" type="Node2D"]
 script = SubResource("GDScript_1")
 
@@ -129,110 +236,3 @@ text = "Main Menu"
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
-
-[sub_resource type="GDScript" id="GDScript_1"]
-script/source = "extends Node2D
-
-# 🎮 DINO EXPLORER - MAIN GAME SCRIPT
-
-# ⚙️ GAME SETTINGS - CUSTOMIZE HERE!
-const ENEMY_COUNT = 3  # Number of aggressive dinos
-const PET_SPAWN_TIME = 10.0  # How often friendly dinos appear
-const DAMAGE_COOLDOWN = 1.0  # Seconds of invincibility after hit
-
-@onready var player: CharacterBody2D = $Player
-@onready var pet_spawn_timer: Timer = $PetSpawnTimer
-@onready var score_label: Label = $UI/ScoreLabel
-@onready var lives_label: Label = $UI/LivesLabel
-@onready var game_over_panel: Panel = $UI/GameOverPanel
-
-var enemy_scene = preload(\"res://dino_explorer/Enemy.tscn\")
-var pet_scene = preload(\"res://dino_explorer/PetDino.tscn\")
-
-var dinos_petted: int = 0
-var lives: int = 3
-var can_take_damage: bool = true
-
-func _ready() -> void:
-	AdManager.show_banner_ad()
-	spawn_enemies()
-	pet_spawn_timer.wait_time = PET_SPAWN_TIME
-
-func spawn_enemies() -> void:
-	# 🦖 SPAWN AGGRESSIVE DINOS
-	for i in range(ENEMY_COUNT):
-		var enemy = enemy_scene.instantiate()
-		# Random position away from player
-		var random_pos = Vector2(
-			randf_range(100, 700),
-			randf_range(100, 500)
-		)
-		enemy.position = random_pos
-		enemy.set_player(player)
-		enemy.add_to_group(\"enemy\")
-		add_child(enemy)
-
-func _process(_delta: float) -> void:
-	# Check collision with enemies
-	for enemy in get_tree().get_nodes_in_group(\"enemy\"):
-		if enemy is CharacterBody2D:
-			var distance = player.position.distance_to(enemy.position)
-			if distance < 30 and can_take_damage:
-				take_damage()
-
-func _on_pet_spawn_timer_timeout() -> void:
-	# 💚 SPAWN FRIENDLY DINO TO PET
-	var pet = pet_scene.instantiate()
-	# Random position
-	pet.position = Vector2(
-		randf_range(100, 700),
-		randf_range(100, 500)
-	)
-	pet.petted.connect(_on_dino_petted)
-	add_child(pet)
-
-func _on_dino_petted() -> void:
-	dinos_petted += 1
-	score_label.text = \"Dinos Petted: \" + str(dinos_petted)
-
-func take_damage() -> void:
-	if not can_take_damage:
-		return
-	
-	lives -= 1
-	lives_label.text = \"Lives: \" + str(lives)
-	can_take_damage = false
-	
-	# Flash player
-	player.modulate = Color(1, 0, 0, 0.5)
-	await get_tree().create_timer(DAMAGE_COOLDOWN).timeout
-	player.modulate = Color(1, 1, 1, 1)
-	can_take_damage = true
-	
-	if lives <= 0:
-		game_over()
-
-func game_over() -> void:
-	get_tree().paused = true
-	game_over_panel.visible = true
-	pet_spawn_timer.stop()
-
-func _on_watch_ad_pressed() -> void:
-	if AdManager.is_reward_ad_ready():
-		AdManager.show_reward_ad()
-		await AdManager.ad_rewarded
-		lives += 3
-		lives_label.text = \"Lives: \" + str(lives)
-		game_over_panel.visible = false
-		get_tree().paused = false
-		pet_spawn_timer.start()
-
-func _on_restart_pressed() -> void:
-	get_tree().paused = false
-	get_tree().reload_current_scene()
-
-func _on_menu_pressed() -> void:
-	get_tree().paused = false
-	AdManager.hide_banner_ad()
-	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
-"
