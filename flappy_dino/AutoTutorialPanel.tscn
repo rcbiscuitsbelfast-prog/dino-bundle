@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4pf6iryk2ktn"]
+[gd_scene load_steps=2 format=3 uid="uid://dr2e2bdxb21q6"]
 
 [ext_resource type="Script" path="res://flappy_dino/AutoTutorialPanel.gd" id="1"]
 
@@ -13,11 +13,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 0
 color = Color(0, 0, 0, 0.75)
 
 [node name="Panel" type="Panel" parent="Overlay"]
-anchors_preset = 8
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -30,7 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="Overlay/Panel"]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -45,7 +44,8 @@ horizontal_alignment = 1
 
 [node name="Instructions" type="Label" parent="Overlay/Panel/VBox"]
 layout_mode = 2
-text = "TAP TO START\nKEEP TAPPING TO FLY"
+text = "TAP TO START
+KEEP TAPPING TO FLY"
 horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="Overlay/Panel/VBox"]
