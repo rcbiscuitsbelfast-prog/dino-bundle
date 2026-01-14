@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://flappygame"]
+[gd_scene load_steps=6 format=3 uid="uid://flappygame"]
 
 [ext_resource type="PackedScene" uid="uid://bird" path="res://flappy_dino/Bird.tscn" id="1"]
-[ext_resource type="PackedScene" uid="uid://pipepair" path="res://flappy_dino/PipePair.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://pausemenu" path="res://shared/PauseMenu.tscn" id="3"]
-[ext_resource type="PackedScene" uid="uid://flappyautotutorial" path="res://flappy_dino/AutoTutorialPanel.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://dr2e2bdxb21q6" path="res://flappy_dino/AutoTutorialPanel.tscn" id="4"]
+[ext_resource type="Texture2D" uid="uid://c14h7d4h3as7n" path="res://Assets/Flat Nature Art.png" id="4_svq57"]
 
 [sub_resource type="GDScript" id="GDScript_1"]
 script/source = "extends Node2D
@@ -40,127 +40,124 @@ var far_bg_offset: float = 0.0
 var mid_bg_offset: float = 0.0
 
 func _ready() -> void:
-    AdManager.show_banner_ad()
-    
-    # Apply difficulty settings
-    PIPE_SPAWN_INTERVAL = 2.0 / SettingsManager.get_obstacle_spawn_multiplier()
-    spawn_timer.wait_time = PIPE_SPAWN_INTERVAL
-    
-    # Auto-pause and show tutorial on startup
-    get_tree().paused = true
-    if TutorialManager.should_show_tutorial(\"flappy\"):
-        show_tutorial()
-    else:
-        show_auto_tutorial()
+	AdManager.show_banner_ad()
+	
+	# Apply difficulty settings
+	PIPE_SPAWN_INTERVAL = 2.0 / SettingsManager.get_obstacle_spawn_multiplier()
+	spawn_timer.wait_time = PIPE_SPAWN_INTERVAL
+	
+	# Auto-pause and show tutorial on startup
+	get_tree().paused = true
+	if TutorialManager.should_show_tutorial(\"flappy\"):
+		show_tutorial()
+	else:
+		show_auto_tutorial()
 
 func start_game() -> void:
-    # Start normal game loop
-    game_started = true
-    get_tree().paused = false
-    spawn_timer.start()
+	# Start normal game loop
+	game_started = true
+	get_tree().paused = false
+	spawn_timer.start()
 
 func show_tutorial() -> void:
-    var tutorial = tutorial_scene.instantiate()
-    add_child(tutorial)
-    TutorialManager.show_tutorial(\"flappy\")
+	var tutorial = tutorial_scene.instantiate()
+	add_child(tutorial)
+	TutorialManager.show_tutorial(\"flappy\")
 
 func show_auto_tutorial() -> void:
-    # Show simple \"TAP TO START\" tutorial
-    $AutoTutorialPanel.visible = true
-    $AutoTutorialPanel.start_pressed.connect(_on_start_game_pressed)
+	# Show simple \"TAP TO START\" tutorial
+	$AutoTutorialPanel.visible = true
+	$AutoTutorialPanel.start_pressed.connect(_on_start_game_pressed)
 
 func _on_start_game_pressed() -> void:
-    $AutoTutorialPanel.visible = false
-    start_game()
+	$AutoTutorialPanel.visible = false
+	start_game()
 
 func _process(delta: float) -> void:
-    # Check if bird falls off screen (death without collision)
-    if bird.position.y > 600:
-        take_damage()
-    
-    # 🎨 PARALLAX SCROLLING - Creates depth effect
-    # The far background scrolls slowest, mid background faster
-    far_bg_offset -= FAR_BG_SPEED * delta
-    mid_bg_offset -= MID_BG_SPEED * delta
-    
-    # Reset positions to create infinite scroll
-    if far_bg_offset <= -800:
-        far_bg_offset = 0
-    if mid_bg_offset <= -800:
-        mid_bg_offset = 0
-    
-    # Apply offsets
-    far_bg.position.x = far_bg_offset
-    mid_bg.position.x = mid_bg_offset
+	# Check if bird falls off screen (death without collision)
+	if bird.position.y > 600:
+		take_damage()
+	
+	# 🎨 PARALLAX SCROLLING - Creates depth effect
+	# The far background scrolls slowest, mid background faster
+	far_bg_offset -= FAR_BG_SPEED * delta
+	mid_bg_offset -= MID_BG_SPEED * delta
+	
+	# Reset positions to create infinite scroll
+	if far_bg_offset <= -800:
+		far_bg_offset = 0
+	if mid_bg_offset <= -800:
+		mid_bg_offset = 0
+	
+	# Apply offsets
+	far_bg.position.x = far_bg_offset
+
 
 func _on_spawn_timer_timeout() -> void:
-    # Create new pipe obstacle
-    var pipe = pipe_scene.instantiate()
-    pipe.position = Vector2(850, 0)
-    pipe.passed.connect(_on_pipe_passed)
-    add_child(pipe)
+	# Create new pipe obstacle
+	var pipe = pipe_scene.instantiate()
+	pipe.position = Vector2(850, 0)
+	pipe.passed.connect(_on_pipe_passed)
+	add_child(pipe)
 
 func _on_pipe_passed() -> void:
-    # Increment score when bird successfully passes a pipe
-    score += 1
-    score_label.text = \"Score: \" + str(score)
+	# Increment score when bird successfully passes a pipe
+	score += 1
+	score_label.text = \"Score: \" + str(score)
 
 func take_damage() -> void:
-    lives -= 1
-    lives_label.text = \"Lives: \" + str(lives)
-    
-    if lives <= 0:
-        game_over()
-    else:
-        # Reset bird position
-        bird.position = Vector2(150, 300)
-        bird.velocity = Vector2.ZERO
+	lives -= 1
+	lives_label.text = \"Lives: \" + str(lives)
+	
+	if lives <= 0:
+		game_over()
+	else:
+		# Reset bird position
+		bird.position = Vector2(150, 300)
+		bird.velocity = Vector2.ZERO
 
 func game_over() -> void:
-    get_tree().paused = true
-    game_over_panel.visible = true
-    spawn_timer.stop()
-    pause_menu.is_paused = false
-    pause_menu.hide_pause_menu()
+	get_tree().paused = true
+	game_over_panel.visible = true
+	spawn_timer.stop()
+	pause_menu.is_paused = false
+	pause_menu.hide_pause_menu()
 
 func _on_watch_ad_pressed() -> void:
-    if AdManager.is_reward_ad_ready():
-        AdManager.show_reward_ad()
-        await AdManager.ad_rewarded
-        # Grant 3 extra lives
-        lives += 3
-        lives_label.text = \"Lives: \" + str(lives)
-        game_over_panel.visible = false
-        get_tree().paused = false
-        spawn_timer.start()
+	if AdManager.is_reward_ad_ready():
+		AdManager.show_reward_ad()
+		await AdManager.ad_rewarded
+		# Grant 3 extra lives
+		lives += 3
+		lives_label.text = \"Lives: \" + str(lives)
+		game_over_panel.visible = false
+		get_tree().paused = false
+		spawn_timer.start()
 
 func _on_restart_pressed() -> void:
-    get_tree().paused = false
-    get_tree().reload_current_scene()
+	get_tree().paused = false
+	get_tree().reload_current_scene()
 
 func _on_menu_pressed() -> void:
-    get_tree().paused = false
-    AdManager.hide_banner_ad()
-    get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+	get_tree().paused = false
+	AdManager.hide_banner_ad()
+	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
 
 # Pause menu integration
 func _on_pause_menu_resume_requested() -> void:
-    # Resume game logic is handled by pause menu itself
-    pass
+	# Resume game logic is handled by pause menu itself
+	pass
 
 func _on_pause_menu_restart_requested() -> void:
-    _on_restart_pressed()
+	_on_restart_pressed()
 
 func _on_pause_menu_settings_requested() -> void:
-    get_tree().paused = false
-    get_tree().change_scene_to_file(\"res://shared/Settings.tscn\")
+	get_tree().paused = false
+	get_tree().change_scene_to_file(\"res://shared/Settings.tscn\")
 
 func _on_pause_menu_menu_requested() -> void:
-    _on_menu_pressed()
+	_on_menu_pressed()
 "
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(800, 50)
 
 [node name="FlappyGame" type="Node2D"]
 script = SubResource("GDScript_1")
@@ -173,11 +170,10 @@ offset_right = 800.0
 offset_bottom = 600.0
 color = Color(0.4, 0.6, 0.8, 1)
 
-[node name="MidBackground" type="ColorRect" parent="."]
-offset_top = 400.0
-offset_right = 800.0
-offset_bottom = 600.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="FlatNatureArt" type="Sprite2D" parent="FarBackground"]
+position = Vector2(582, 412)
+scale = Vector2(1.17969, 1.12361)
+texture = ExtResource("4_svq57")
 
 [node name="MainBackground" type="ColorRect" parent="."]
 offset_right = 800.0
@@ -189,7 +185,6 @@ position = Vector2(150, 300)
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
-autostart = false
 
 [node name="PauseMenu" parent="." instance=ExtResource("3")]
 
@@ -255,10 +250,10 @@ layout_mode = 2
 text = "Main Menu"
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="menu_requested" from="PauseMenu" to="." method="_on_pause_menu_menu_requested"]
+[connection signal="restart_requested" from="PauseMenu" to="." method="_on_pause_menu_restart_requested"]
+[connection signal="resume_requested" from="PauseMenu" to="." method="_on_pause_menu_resume_requested"]
+[connection signal="settings_requested" from="PauseMenu" to="." method="_on_pause_menu_settings_requested"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
-[connection signal="resume_requested" from="PauseMenu" to="." method="_on_pause_menu_resume_requested"]
-[connection signal="restart_requested" from="PauseMenu" to="." method="_on_pause_menu_restart_requested"]
-[connection signal="settings_requested" from="PauseMenu" to="." method="_on_pause_menu_settings_requested"]
-[connection signal="menu_requested" from="PauseMenu" to="." method="_on_pause_menu_menu_requested"]
