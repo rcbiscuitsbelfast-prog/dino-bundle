@@ -2,7 +2,7 @@ ea4bc82a6ad023ab7ee23ee620429895
 ::res://::1768393176
 export_presets.cfg::TextFile/TextFile::-1::1768379671::0::1::::<><><>0<>0<><>::
 IMPLEMENTATION_SUMMARY.md::TextFile::-1::1768393104::0::1::::<><><>0<>0<><>::
-readme.md::TextFile/TextFile::-1::1768356113::0::1::::<><><>0<>0<><>::
+readme.md::TextFile::-1::1768404980::0::1::::<><><>0<>0<><>::
 TASK_COMPLETION_CHECKLIST.md::TextFile::-1::1768393104::0::1::::<><><>0<>0<><>::
 ::res://Assets/::1768389633
 Flat Nature Art.png::CompressedTexture2D/CompressedTexture2D::6658100623921965301::1768383553::1768383573::1::::<><><>0<>0<>a453e689b5a56aaf7dfe0e20a4c12c4e<>res://.godot/imported/Flat Nature Art.png-0b405484597544fb9f92843565aa83e2.ctex::
@@ -951,8 +951,8 @@ spritesheet-lavarock2.png::CompressedTexture2D/CompressedTexture2D::637905412016
 ::res://Assets/Top Down Lava Tileset 16x16 Free/FREE TILESET FILES/PROPS ( No Animations )/::1768389608
 ::res://Assets/Top Down Lava Tileset 16x16 Free/FREE TILESET FILES/PROPS ( No Animations )/Rock1/::1768392850
 Rock1.png::CompressedTexture2D/CompressedTexture2D::8490487744565759559::1768392850::1768389648::1::::<><><>0<>0<>42af83f2d2e058f589b0b314a8aad36b<>res://.godot/imported/Rock1.png-2a3f6ab707e77ddef2e44e26e41b4229.ctex::
-::res://Assets/Top Down Lava Tileset 16x16 Free/FREE TILESET FILES/PROPS ( No Animations )/Rock2/::1768392850
-Rock2.png::CompressedTexture2D/CompressedTexture2D::3249446884758647566::1768392850::1768389648::1::::<><><>0<>0<>97a5701d1a2f12a379e20e93284cd29e<>res://.godot/imported/Rock2.png-e26079b270b3744cf05f7c99fad6a102.ctex::
+::res://Assets/Top Down Lava Tileset 16x16 Free/FREE TILESET FILES/PROPS ( No Animations )/Rock2/::1768414274
+Rock2.png::CompressedTexture2D/CompressedTexture2D::3249446884758647566::1768392850::1768414286::1::::<><><>0<>0<>423638a5e464d18ec121de8173bc16cf<>res://.godot/imported/Rock2.png-e26079b270b3744cf05f7c99fad6a102.ctex::
 ::res://Assets/Top Down Lava Tileset 16x16 Free/FREE TILESET FILES/PROPS ( With Animations )/::1768389608
 ::res://Assets/Top Down Lava Tileset 16x16 Free/FREE TILESET FILES/PROPS ( With Animations )/Chest GOLD/::1768392850
 goldchest1.png::CompressedTexture2D/CompressedTexture2D::962244549896689256::1768392850::1768389648::1::::<><><>0<>0<>54ea2a6f5e15102192531e8e4ae371fa<>res://.godot/imported/goldchest1.png-ca608cea8dec4875c18305c4a530bad3.ctex::
@@ -1003,47 +1003,47 @@ torch7.png::CompressedTexture2D/CompressedTexture2D::2021007147465935517::176839
 index.apple-touch-icon.png::CompressedTexture2D/CompressedTexture2D::7924980673142881470::1768383536::1768383573::1::::<><><>0<>0<>9c4d22f067e6e26e912f8d89b0353257<>res://.godot/imported/index.apple-touch-icon.png-dcd2c094bfa3f769157f6f2ba930cc56.ctex::
 index.icon.png::CompressedTexture2D/CompressedTexture2D::7205425526026700141::1768383536::1768383573::1::::<><><>0<>0<>675422fdc6ecdaf32abc6b797dcf009f<>res://.godot/imported/index.icon.png-96098a584bb713a61c1e8aa1df56a1bb.ctex::
 index.png::CompressedTexture2D/CompressedTexture2D::2093124599996215032::1768383536::1768383573::1::::<><><>0<>0<>4a9183d2d42e3af0ad57a702c6ef89fa<>res://.godot/imported/index.png-659c11691fe5279cf81f33eb936290a4.ctex::
-::res://dino_explorer/::1768393104
+::res://dino_explorer/::1768405362
 Egg.tscn::PackedScene::4834::1768393104::0::1::::<><><>0<>0<><>::
 Enemy.gd::GDScript::6502780674472448096::1768393104::0::1::::<>CharacterBody2D<><>0<>0<><>::
 Enemy.tscn::PackedScene::5861352::1768393104::0::1::::<><><>0<>0<><>::uid://cyv8324wnvu2c::::res://dino_explorer/Enemy.gd
-ExplorerGame.tscn::PackedScene::329167223313227932::1768393104::0::1::::<><><>0<>0<><>::uid://player::::res://dino_explorer/Player.tscn<>uid://pausemenu::::res://shared/PauseMenu.tscn
+ExplorerGame.tscn::PackedScene::329167223313227932::1768405362::0::1::::<><><>0<>0<><>::uid://player::::res://dino_explorer/Player.tscn<>uid://pausemenu::::res://shared/PauseMenu.tscn
 ExplorerTutorial.gd::GDScript/GDScript::8393364639344553140::1768383536::0::1::::<>CanvasLayer<><>0<>0<><>::
 ExplorerTutorial.tscn::PackedScene/PackedScene::6174724578680406771::1768383536::0::1::::<><><>0<>0<><>::uid://dnsg6xaqadrlh::::res://dino_explorer/ExplorerTutorial.gd
 Nest.tscn::PackedScene::516207::1768393104::0::1::::<><><>0<>0<><>::
-PetDino.gd::GDScript::5379959463384603801::1768393104::0::1::::<>Area2D<><>0<>0<><>::
+PetDino.gd::GDScript::5379959463384603801::1768393195::0::1::::<>Area2D<><>0<>0<><>::
 PetDino.tscn::PackedScene::23379325936::1768393104::0::1::::<><><>0<>0<><>::res://dino_explorer/PetDino.gd
 Player.gd::GDScript::2644796508881690282::1768393104::0::1::::<>CharacterBody2D<><>0<>0<><>::
-Player.tscn::PackedScene::696258953::1768393104::0::1::::<><><>0<>0<><>::res://dino_explorer/Player.gd
-::res://dino_runner/::1768393104
-Dino.gd::GDScript::257562067834823709::1768393104::0::1::::<>CharacterBody2D<><>0<>0<><>::
-Dino.tscn::PackedScene::127616::1768393104::0::1::::<><><>0<>0<><>::res://dino_runner/Dino.gd
+Player.tscn::PackedScene::696258953::1768405362::0::1::::<><><>0<>0<><>::uid://bdxfoam37ahti::::res://dino_explorer/Player.gd
+::res://dino_runner/::1768414141
+Dino.gd::GDScript::257562067834823709::1768410473::0::1::::<>CharacterBody2D<><>0<>0<><>::
+Dino.tscn::PackedScene::127616::1768410473::0::1::::<><><>0<>0<><>::uid://dw1alem3tvsn::::res://dino_runner/Dino.gd<>uid://cjwvxo7feioth::::res://Assets/png/Run (1).png<>uid://c31fdylj817v2::::res://Assets/png/Jump (1).png<>uid://b1h4ufupanu8s::::res://Assets/png/Jump (2).png<>uid://d32da25r5cdjo::::res://Assets/png/Jump (3).png<>uid://cy7g23hg3c0en::::res://Assets/png/Jump (4).png<>uid://bme0gjoptmnoc::::res://Assets/png/Jump (5).png<>uid://dk1led1w6yxnp::::res://Assets/png/Jump (6).png<>uid://crd17rdqtsj83::::res://Assets/png/Jump (7).png<>uid://bcx2nna7udg0::::res://Assets/png/Jump (8).png<>uid://c714olchd2o4w::::res://Assets/png/Jump (9).png<>uid://doxbfbjvq145h::::res://Assets/png/Jump (10).png<>uid://cqokp3o70520h::::res://Assets/png/Jump (11).png<>uid://d2wgygtbrw5uh::::res://Assets/png/Jump (12).png<>uid://rbylcebk6jjk::::res://Assets/png/Run (2).png<>uid://c2fa1h6wc3qa5::::res://Assets/png/Run (3).png<>uid://c1tjwdqnehrew::::res://Assets/png/Run (4).png<>uid://dqtbmwelb2rsx::::res://Assets/png/Run (5).png<>uid://crjveg66hokxb::::res://Assets/png/Run (6).png<>uid://dntn1sfyntv0s::::res://Assets/png/Run (7).png<>uid://do0es15nsbyie::::res://Assets/png/Run (8).png
 Obstacle.gd::GDScript/GDScript::2032982212688599248::1768383536::0::1::::<>Area2D<><>0<>0<><>::
 Obstacle.tscn::PackedScene/PackedScene::737714937138::1768352204::0::1::::<><><>0<>0<><>::res://dino_runner/Obstacle.gd
 PowerUp.gd::GDScript/GDScript::512378488276805708::1768352204::0::1::::<>Area2D<><>0<>0<><>::
 PowerUp.tscn::PackedScene/PackedScene::23837739131::1768352204::0::1::::<><><>0<>0<><>::res://dino_runner/PowerUp.gd
-RunnerGame.tscn::PackedScene::1068607845832732::1768393104::0::1::::<><><>0<>0<><>::uid://dino::::res://dino_runner/Dino.tscn<>uid://obstacle::::res://dino_runner/Obstacle.tscn<>uid://powerup::::res://dino_runner/PowerUp.tscn<>uid://pausemenu::::res://shared/PauseMenu.tscn
+RunnerGame.tscn::PackedScene::1068607845832732::1768410473::0::1::::<><><>0<>0<><>::uid://dino::::res://dino_runner/Dino.tscn<>uid://c14h7d4h3as7n::::res://Assets/Flat Nature Art.png<>uid://pausemenu::::res://shared/PauseMenu.tscn
 RunnerTutorial.gd::GDScript/GDScript::9008242706856841784::1768383536::0::1::::<>CanvasLayer<><>0<>0<><>::
 RunnerTutorial.tscn::PackedScene/PackedScene::7619841307126004467::1768383536::0::1::::<><><>0<>0<><>::uid://bt03qvgfm1tr2::::res://dino_runner/RunnerTutorial.gd
-::res://flappy_dino/::1768393104
+::res://flappy_dino/::1768410473
 AutoTutorialPanel.gd::GDScript/GDScript::-1::1768383536::0::1::::<>CanvasLayer<><>0<>0<><>::
-AutoTutorialPanel.tscn::PackedScene::8408501734897172015::1768392850::0::1::::<><><>0<>0<><>::res://flappy_dino/AutoTutorialPanel.gd
-Bird.gd::GDScript::7375560748399387532::1768393104::0::1::::<>CharacterBody2D<><>0<>0<><>::
-Bird.tscn::PackedScene::49133::1768387269::0::1::::<><><>0<>0<><>::uid://ddc1n4t2hp7pg::::res://flappy_dino/Bird.gd
-FlappyGame.tscn::PackedScene::323252582692076::1768392850::0::1::::<><><>0<>0<><>::uid://bird::::res://flappy_dino/Bird.tscn<>uid://pausemenu::::res://shared/PauseMenu.tscn<>uid://dr2e2bdxb21q6::::res://flappy_dino/AutoTutorialPanel.tscn<>uid://c14h7d4h3as7n::::res://Assets/Flat Nature Art.png
+AutoTutorialPanel.tscn::PackedScene::8408501734897172015::1768405362::0::1::::<><><>0<>0<><>::res://flappy_dino/AutoTutorialPanel.gd
+Bird.gd::GDScript::7375560748399387532::1768404891::0::1::::<>CharacterBody2D<><>0<>0<><>::
+Bird.tscn::PackedScene::49133::1768410473::0::1::::<><><>0<>0<><>::uid://ddc1n4t2hp7pg::::res://flappy_dino/Bird.gd<>uid://dplh1mk88qyjh::::res://Assets/png/Alanqa/Fly_000.png
+FlappyGame.tscn::PackedScene::323252582692076::1768405362::0::1::::<><><>0<>0<><>::uid://bird::::res://flappy_dino/Bird.tscn<>uid://pausemenu::::res://shared/PauseMenu.tscn<>uid://dr2e2bdxb21q6::::res://flappy_dino/AutoTutorialPanel.tscn<>uid://c14h7d4h3as7n::::res://Assets/Flat Nature Art.png
 FlappyTutorial.gd::GDScript/GDScript::5801407374691017328::1768383536::0::1::::<>CanvasLayer<><>0<>0<><>::
 FlappyTutorial.tscn::PackedScene/PackedScene::7698950363110115315::1768383536::0::1::::<><><>0<>0<><>::uid://bqgadl843acqr::::res://flappy_dino/FlappyTutorial.gd
 PipePair.gd::GDScript/GDScript::504880225349007609::1768383536::0::1::::<>Node2D<><>0<>0<><>::
-PipePair.tscn::PackedScene::800896154041::1768392850::0::1::::<><><>0<>0<><>::uid://hgtkk5vsy5s4::::res://flappy_dino/PipePair.gd
-::res://launcher/::1768387269
+PipePair.tscn::PackedScene::800896154041::1768405362::0::1::::<><><>0<>0<><>::uid://hgtkk5vsy5s4::::res://flappy_dino/PipePair.gd
+::res://launcher/::1768401403
 Launcher.gd::GDScript::3355282767588717796::1768383554::0::1::::<>Control<><>0<>0<><>::
-Launcher.tscn::PackedScene::578683019285::1768387269::0::1::::<><><>0<>0<><>::uid://bn2latu7utchw::::res://launcher/Launcher.gd<>uid://c14h7d4h3as7n::::res://Assets/Flat Nature Art.png
+Launcher.tscn::PackedScene::578683019285::1768401403::0::1::::<><><>0<>0<><>::uid://bn2latu7utchw::::res://launcher/Launcher.gd<>uid://c14h7d4h3as7n::::res://Assets/Flat Nature Art.png
 ::res://shared/::1768393104
 AdManager.gd::GDScript/GDScript::4375339450592384133::1768352204::0::1::::<>Node<><>0<>0<><>::
 colors.gd::GDScript/GDScript::7287848588105811883::1768352204::0::1::::<>Node<><>0<>0<><>::
 PauseMenu.gd::GDScript/GDScript::82750473348369169::1768383537::0::1::::<>CanvasLayer<><>0<>0<><>::
-PauseMenu.tscn::PackedScene/PackedScene::26818628321470::1768383537::0::1::::<><><>0<>0<><>::uid://dda455uhxmuij::::res://shared/PauseMenu.gd
-Settings.gd::GDScript::-1::1768393104::0::1::::<>Control<><>0<>0<><>::
+PauseMenu.tscn::PackedScene::26818628321470::1768405183::0::1::::<><><>0<>0<><>::res://shared/PauseMenu.gd
+Settings.gd::GDScript::-1::1768400940::0::1::::<>Control<><>0<>0<><>::
 Settings.tscn::PackedScene/PackedScene::952488513378::1768379671::0::1::::<><><>0<>0<><>::uid://cbx4uhnqjmc78::::res://shared/Settings.gd
 SettingsManager.gd::GDScript/GDScript::7213433796961742199::1768379672::0::1::::<>Node<><>0<>0<><>::
 TouchInputHandler.gd::GDScript/GDScript::5194477791134898113::1768379672::0::1::::<>Node<><>0<>0<><>::

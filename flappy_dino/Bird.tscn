@@ -1,20 +1,80 @@
-[gd_scene load_steps=3 format=3 uid="uid://bird"]
+[gd_scene load_steps=13 format=3 uid="uid://bird"]
 
 [ext_resource type="Script" uid="uid://ddc1n4t2hp7pg" path="res://flappy_dino/Bird.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bfteu4wx5i5cp" path="res://Assets/png/Alanqa/Dead_000.png" id="2_3i86f"]
+[ext_resource type="Texture2D" uid="uid://dplh1mk88qyjh" path="res://Assets/png/Alanqa/Fly_000.png" id="2_q1xwq"]
+[ext_resource type="Texture2D" uid="uid://dnybvogkxmvkw" path="res://Assets/png/Alanqa/Dead_001.png" id="3_pniif"]
+[ext_resource type="Texture2D" uid="uid://fpde4i5v52qf" path="res://Assets/png/Alanqa/Fly_001.png" id="5_prfco"]
+[ext_resource type="Texture2D" uid="uid://cj4kbsm6xn4oo" path="res://Assets/png/Alanqa/Fly_002.png" id="6_e7are"]
+[ext_resource type="Texture2D" uid="uid://u32px4jtdmif" path="res://Assets/png/Alanqa/Fly_003.png" id="7_kmcok"]
+[ext_resource type="Texture2D" uid="uid://bodrnfcs43rkc" path="res://Assets/png/Alanqa/Hurt_000.png" id="8_5cihy"]
+[ext_resource type="Texture2D" uid="uid://bw3ns7yuvotdd" path="res://Assets/png/Alanqa/Hurt_001.png" id="9_ftofo"]
+[ext_resource type="Texture2D" uid="uid://pqcxtvimrgiy" path="res://Assets/png/Alanqa/Hurt_002.png" id="10_k07rd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 10.0499
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c4415"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_3i86f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_pniif")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_q1xwq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_prfco")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_e7are")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_kmcok")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_5cihy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ftofo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_k07rd")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}]
 
 [node name="Bird" type="CharacterBody2D"]
 script = ExtResource("1")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -10.0
-offset_top = -10.0
-offset_right = 10.0
-offset_bottom = 10.0
-color = Color(0.2, 0.8, 0.2, 1)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ColorRect"]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 0)
+scale = Vector2(-1, -1)
 shape = SubResource("CircleShape2D_1")
+one_way_collision_margin = 0.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.0586778, 0.067125)
+sprite_frames = SubResource("SpriteFrames_c4415")
+animation = &"fly"
+frame_progress = 0.605026
