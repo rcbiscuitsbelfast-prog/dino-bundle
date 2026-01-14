@@ -1,0 +1,1347 @@
+# 🦖 DINO GAME BUNDLE - ENHANCED VERSION WITH DETAILED COMMENTS
+# Copy each file to the specified path in your Godot project
+
+# ==========================================
+# PROJECT.GODOT
+# ==========================================
+# Save as: project.godot
+
+config_version=5
+
+[application]
+
+config/name="Dino Game Bundle"
+run/main_scene="res://launcher/Launcher.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+
+[display]
+
+window/size/viewport_width=800
+window/size/viewport_height=600
+
+[input]
+
+ui_accept={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194309,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+ui_left={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194319,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+ui_right={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194321,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+ui_up={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194320,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+ui_down={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194322,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+
+# ==========================================
+# SHARED/COLORS.GD
+# ==========================================
+# Save as: shared/colors.gd
+
+extends Node
+
+# 🎨 EASY COLOR CUSTOMIZATION
+# Change these colors to customize your game's look!
+# Colors are in format: Color(RED, GREEN, BLUE, ALPHA)
+# Values range from 0.0 to 1.0
+
+const BACKGROUND = Color(0.53, 0.81, 0.92)  # Sky blue - main background
+const PLAYER = Color(0.2, 0.8, 0.2)  # Green - player character
+const OBSTACLE = Color(0.8, 0.2, 0.2)  # Red - obstacles/enemies
+const POWERUP = Color(1.0, 0.84, 0.0)  # Gold - power-ups
+const UI = Color(0.9, 0.9, 0.9)  # Light gray - UI elements
+const GROUND = Color(0.4, 0.3, 0.2)  # Brown - ground
+
+# ==========================================
+# SHARED/UTILS.GD
+# ==========================================
+# Save as: shared/utils.gd
+
+extends Node
+
+func random_range(min_val: float, max_val: float) -> float:
+	return randf_range(min_val, max_val)
+
+# ==========================================
+# SHARED/ADMANAGER.GD
+# ==========================================
+# Save as: shared/AdManager.gd
+
+extends Node
+
+# 📢 AD SYSTEM - PLACEHOLDER
+# This is a placeholder for ad integration
+# To use real ads, you'll need to:
+# 1. Install an ad plugin (like AdMob for Godot)
+# 2. Replace these functions with actual ad calls
+# 3. Add your ad unit IDs from your ad network
+
+signal ad_rewarded
+signal ad_closed
+
+var is_ad_available: bool = true
+
+func show_banner_ad() -> void:
+	print("🎯 BANNER AD: Would show here")
+	# REPLACE WITH: Your ad plugin's banner.show() function
+
+func hide_banner_ad() -> void:
+	print("🎯 BANNER AD: Would hide here")
+	# REPLACE WITH: Your ad plugin's banner.hide() function
+
+func show_reward_ad() -> void:
+	print("🎯 REWARD AD: Would show here")
+	# Simulate ad completion after 2 seconds
+	await get_tree().create_timer(2.0).timeout
+	ad_rewarded.emit()
+	# REPLACE WITH: Your ad plugin's rewarded_video.show() function
+
+func is_reward_ad_ready() -> bool:
+	return is_ad_available
+	# REPLACE WITH: Your ad plugin's rewarded_video.is_loaded() function
+
+# ==========================================
+# LAUNCHER/LAUNCHER.GD
+# ==========================================
+# Save as: launcher/Launcher.gd
+
+extends Control
+
+func _ready() -> void:
+	# Show banner ad on launcher
+	AdManager.show_banner_ad()
+
+func _on_flappy_pressed() -> void:
+	get_tree().change_scene_to_file("res://flappy_dino/FlappyGame.tscn")
+
+func _on_runner_pressed() -> void:
+	get_tree().change_scene_to_file("res://dino_runner/RunnerGame.tscn")
+
+func _on_explorer_pressed() -> void:
+	get_tree().change_scene_to_file("res://dino_explorer/ExplorerGame.tscn")
+
+# ==========================================
+# LAUNCHER/LAUNCHER.TSCN
+# ==========================================
+# Save as: launcher/Launcher.tscn
+
+[gd_scene load_steps=2 format=3 uid="uid://launcher"]
+
+[ext_resource type="Script" path="res://launcher/Launcher.gd" id="1"]
+
+[node name="Launcher" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.53, 0.81, 0.92, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "🦖 DINO GAME BUNDLE"
+horizontal_alignment = 1
+
+[node name="FlappyButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Flappy Dino"
+
+[node name="RunnerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Dino Runner"
+
+[node name="ExplorerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Play Dino Explorer"
+
+[connection signal="pressed" from="VBoxContainer/FlappyButton" to="." method="_on_flappy_pressed"]
+[connection signal="pressed" from="VBoxContainer/RunnerButton" to="." method="_on_runner_pressed"]
+[connection signal="pressed" from="VBoxContainer/ExplorerButton" to="." method="_on_explorer_pressed"]
+
+# ==========================================
+# FLAPPY_DINO/BIRD.GD
+# ==========================================
+# Save as: flappy_dino/Bird.gd
+
+extends CharacterBody2D
+
+# ⚙️ BIRD SETTINGS - EASY TO ADJUST!
+# Higher gravity = bird falls faster
+const GRAVITY = 900.0
+
+# More negative flap = bird jumps higher
+const FLAP_STRENGTH = -300.0
+
+func _physics_process(delta: float) -> void:
+	# Apply gravity to make bird fall
+	velocity.y += GRAVITY * delta
+	
+	# When player presses space/enter, flap upward
+	if Input.is_action_just_pressed("ui_accept"):
+		velocity.y = FLAP_STRENGTH
+	
+	move_and_slide()
+
+# ==========================================
+# FLAPPY_DINO/BIRD.TSCN
+# ==========================================
+# Save as: flappy_dino/Bird.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://bird"]
+
+[ext_resource type="Script" path="res://flappy_dino/Bird.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 10.0
+
+[node name="Bird" type="CharacterBody2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+
+# ==========================================
+# FLAPPY_DINO/PIPEPAIR.GD
+# ==========================================
+# Save as: flappy_dino/PipePair.gd
+
+extends Node2D
+
+# ⚙️ PIPE SETTINGS
+# Higher speed = pipes move faster (harder game)
+const SPEED = 150.0
+
+# Larger gap = easier to pass through
+@export var gap: float = 150.0
+
+@onready var top_pipe: ColorRect = $TopPipe
+@onready var bottom_pipe: ColorRect = $BottomPipe
+
+func _ready() -> void:
+	# Randomize vertical position of gap
+	var gap_center = randf_range(150.0, 450.0)
+	top_pipe.position.y = gap_center - gap / 2 - 300
+	bottom_pipe.position.y = gap_center + gap / 2
+
+func _process(delta: float) -> void:
+	# Move pipes left
+	position.x -= SPEED * delta
+	
+	# Remove pipe when off-screen
+	if position.x < -100:
+		queue_free()
+
+# ==========================================
+# FLAPPY_DINO/PIPEPAIR.TSCN
+# ==========================================
+# Save as: flappy_dino/PipePair.tscn
+
+[gd_scene load_steps=2 format=3 uid="uid://pipepair"]
+
+[ext_resource type="Script" path="res://flappy_dino/PipePair.gd" id="1"]
+
+[node name="PipePair" type="Node2D"]
+script = ExtResource("1")
+
+[node name="TopPipe" type="ColorRect" parent="."]
+offset_left = -25.0
+offset_top = -300.0
+offset_right = 25.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="BottomPipe" type="ColorRect" parent="."]
+offset_left = -25.0
+offset_right = 25.0
+offset_bottom = 300.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+# ==========================================
+# FLAPPY_DINO/FLAPPYGAME.TSCN & SCRIPT
+# ==========================================
+# Save as: flappy_dino/FlappyGame.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://flappygame"]
+
+[ext_resource type="PackedScene" uid="uid://bird" path="res://flappy_dino/Bird.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://pipepair" path="res://flappy_dino/PipePair.tscn" id="2"]
+
+[node name="FlappyGame" type="Node2D"]
+script = SubResource("GDScript_1")
+
+[node name="FarBackground" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.4, 0.6, 0.8, 1)
+
+[node name="MidBackground" type="ColorRect" parent="."]
+offset_top = 400.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.3, 0.5, 0.3, 1)
+
+[node name="MainBackground" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.53, 0.81, 0.92, 0.5)
+
+[node name="Bird" parent="." instance=ExtResource("1")]
+position = Vector2(150, 300)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 60.0
+text = "Score: 0"
+
+[node name="LivesLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 90.0
+text = "Lives: 3"
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Game Over!"
+horizontal_alignment = 1
+
+[node name="WatchAdButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Watch Ad - Get 3 Lives"
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends Node2D
+
+# 🎮 FLAPPY DINO - MAIN GAME SCRIPT
+# This controls the entire Flappy Dino game
+
+# ⚙️ GAME SETTINGS - EASY TO CUSTOMIZE!
+# Change spawn_interval to control how often pipes appear (in seconds)
+const PIPE_SPAWN_INTERVAL = 2.0
+
+# Change these to adjust scrolling background layers
+const FAR_BG_SPEED = 20.0  # Slowest layer (mountains/sky)
+const MID_BG_SPEED = 40.0  # Middle layer (trees/hills)
+
+@onready var bird: CharacterBody2D = $Bird
+@onready var spawn_timer: Timer = $SpawnTimer
+@onready var score_label: Label = $UI/ScoreLabel
+@onready var lives_label: Label = $UI/LivesLabel
+@onready var game_over_panel: Panel = $UI/GameOverPanel
+@onready var far_bg: ColorRect = $FarBackground
+@onready var mid_bg: ColorRect = $MidBackground
+
+var pipe_scene = preload(\"res://flappy_dino/PipePair.tscn\")
+var score: int = 0
+var lives: int = 3
+
+# Parallax scrolling positions
+var far_bg_offset: float = 0.0
+var mid_bg_offset: float = 0.0
+
+func _ready() -> void:
+	AdManager.show_banner_ad()
+	spawn_timer.wait_time = PIPE_SPAWN_INTERVAL
+
+func _process(delta: float) -> void:
+	# 🎨 PARALLAX SCROLLING - Creates depth effect
+	# The far background scrolls slowest, mid background faster
+	far_bg_offset -= FAR_BG_SPEED * delta
+	mid_bg_offset -= MID_BG_SPEED * delta
+	
+	# Reset positions to create infinite scroll
+	if far_bg_offset <= -800:
+		far_bg_offset = 0
+	if mid_bg_offset <= -800:
+		mid_bg_offset = 0
+	
+	# Apply offsets
+	far_bg.position.x = far_bg_offset
+	mid_bg.position.x = mid_bg_offset
+	
+	# Check if bird hits top or bottom of screen
+	if bird.position.y < 0 or bird.position.y > 600:
+		take_damage()
+
+func _on_spawn_timer_timeout() -> void:
+	# Create new pipe obstacle
+	var pipe = pipe_scene.instantiate()
+	pipe.position = Vector2(850, 300)
+	add_child(pipe)
+	score += 1
+	score_label.text = \"Score: \" + str(score)
+
+func take_damage() -> void:
+	lives -= 1
+	lives_label.text = \"Lives: \" + str(lives)
+	
+	if lives <= 0:
+		game_over()
+	else:
+		# Reset bird position
+		bird.position = Vector2(150, 300)
+		bird.velocity = Vector2.ZERO
+
+func game_over() -> void:
+	get_tree().paused = true
+	game_over_panel.visible = true
+	spawn_timer.stop()
+
+func _on_watch_ad_pressed() -> void:
+	if AdManager.is_reward_ad_ready():
+		AdManager.show_reward_ad()
+		await AdManager.ad_rewarded
+		# Grant 3 extra lives
+		lives += 3
+		lives_label.text = \"Lives: \" + str(lives)
+		game_over_panel.visible = false
+		get_tree().paused = false
+		spawn_timer.start()
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_menu_pressed() -> void:
+	get_tree().paused = false
+	AdManager.hide_banner_ad()
+	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+"
+
+# ==========================================
+# DINO_RUNNER/DINO.GD
+# ==========================================
+# Save as: dino_runner/Dino.gd
+
+extends CharacterBody2D
+
+# ⚙️ DINO MOVEMENT SETTINGS
+const GRAVITY = 1200.0
+const JUMP_FORCE = -450.0
+
+var is_immune: bool = false
+
+func _physics_process(delta: float) -> void:
+	velocity.y += GRAVITY * delta
+	
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = JUMP_FORCE
+	
+	move_and_slide()
+
+func grant_immunity(duration: float) -> void:
+	is_immune = true
+	$ColorRect.color = Color(0.2, 0.2, 1.0)  # Blue when immune
+	await get_tree().create_timer(duration).timeout
+	is_immune = false
+	$ColorRect.color = Color(0.2, 0.8, 0.2)  # Back to green
+
+# ==========================================
+# DINO_RUNNER/DINO.TSCN
+# ==========================================
+# Save as: dino_runner/Dino.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://dino"]
+
+[ext_resource type="Script" path="res://dino_runner/Dino.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(30, 40)
+
+[node name="Dino" type="CharacterBody2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -15.0
+offset_top = -20.0
+offset_right = 15.0
+offset_bottom = 20.0
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+# ==========================================
+# DINO_RUNNER/OBSTACLE.GD
+# ==========================================
+# Save as: dino_runner/Obstacle.gd
+
+extends Area2D
+
+# ⚙️ OBSTACLE TYPES - EASY TO ADD MORE!
+# Add new obstacle types to this list
+enum ObstacleType {
+	CACTUS,      # Standard obstacle
+	ROCK,        # Smaller, lower obstacle
+	PTERODACTYL  # Flying obstacle
+}
+
+const SPEED = 200.0
+
+var obstacle_type: ObstacleType
+
+func setup(type: ObstacleType) -> void:
+	obstacle_type = type
+	
+	# 🎨 CUSTOMIZE OBSTACLE APPEARANCE HERE
+	match obstacle_type:
+		ObstacleType.CACTUS:
+			$ColorRect.color = Color(0.8, 0.2, 0.2)  # Red
+			$ColorRect.size = Vector2(20, 40)
+			$ColorRect.position = Vector2(-10, -20)
+			$CollisionShape2D.shape.size = Vector2(20, 40)
+		
+		ObstacleType.ROCK:
+			$ColorRect.color = Color(0.5, 0.5, 0.5)  # Gray
+			$ColorRect.size = Vector2(30, 25)
+			$ColorRect.position = Vector2(-15, -12.5)
+			$CollisionShape2D.shape.size = Vector2(30, 25)
+		
+		ObstacleType.PTERODACTYL:
+			$ColorRect.color = Color(0.6, 0.3, 0.8)  # Purple
+			$ColorRect.size = Vector2(35, 20)
+			$ColorRect.position = Vector2(-17.5, -10)
+			$CollisionShape2D.shape.size = Vector2(35, 20)
+			# Fly at different height
+			position.y -= 100
+
+func _process(delta: float) -> void:
+	position.x -= SPEED * delta
+	
+	if position.x < -50:
+		queue_free()
+
+# ==========================================
+# DINO_RUNNER/OBSTACLE.TSCN
+# ==========================================
+# Save as: dino_runner/Obstacle.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://obstacle"]
+
+[ext_resource type="Script" path="res://dino_runner/Obstacle.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(20, 40)
+
+[node name="Obstacle" type="Area2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -10.0
+offset_top = -20.0
+offset_right = 10.0
+offset_bottom = 20.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+# ==========================================
+# DINO_RUNNER/POWERUP.GD
+# ==========================================
+# Save as: dino_runner/PowerUp.gd
+
+extends Area2D
+
+# ⚙️ POWERUP TYPES - ADD YOUR OWN!
+enum PowerUpType {
+	SHIELD,      # Grants immunity
+	EXTRA_LIFE   # Gives extra life
+}
+
+const SPEED = 200.0
+
+var powerup_type: PowerUpType
+
+func setup(type: PowerUpType) -> void:
+	powerup_type = type
+	
+	# 🎨 CUSTOMIZE POWERUP APPEARANCE HERE
+	match powerup_type:
+		PowerUpType.SHIELD:
+			$ColorRect.color = Color(0.2, 0.5, 1.0)  # Blue shield
+			$Label.text = \"S\"
+		
+		PowerUpType.EXTRA_LIFE:
+			$ColorRect.color = Color(1.0, 0.84, 0.0)  # Gold heart
+			$Label.text = \"+1\"
+
+func _process(delta: float) -> void:
+	position.x -= SPEED * delta
+	
+	# Rotate for visual effect
+	rotation += delta * 2
+	
+	if position.x < -50:
+		queue_free()
+
+# ==========================================
+# DINO_RUNNER/POWERUP.TSCN
+# ==========================================
+# Save as: dino_runner/PowerUp.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://powerup"]
+
+[ext_resource type="Script" path="res://dino_runner/PowerUp.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 15.0
+
+[node name="PowerUp" type="Area2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+color = Color(1, 0.84, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+text = \"+\"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+
+# ==========================================
+# DINO_RUNNER/RUNNERGAME.TSCN & SCRIPT
+# ==========================================
+# Save as: dino_runner/RunnerGame.tscn
+
+[gd_scene load_steps=4 format=3 uid="uid://runnergame"]
+
+[ext_resource type="PackedScene" uid="uid://dino" path="res://dino_runner/Dino.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://obstacle" path="res://dino_runner/Obstacle.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://powerup" path="res://dino_runner/PowerUp.tscn" id="3"]
+
+[node name="RunnerGame" type="Node2D"]
+script = SubResource("GDScript_1")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.53, 0.81, 0.92, 1)
+
+[node name="Ground" type="ColorRect" parent="."]
+offset_top = 500.0
+offset_right = 800.0
+offset_bottom = 510.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Dino" parent="." instance=ExtResource("1")]
+position = Vector2(100, 480)
+
+[node name="ObstacleTimer" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true
+
+[node name="PowerUpTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 60.0
+text = "Score: 0"
+
+[node name="LivesLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 90.0
+text = "Lives: 3"
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Game Over!"
+horizontal_alignment = 1
+
+[node name="WatchAdButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Watch Ad - Get 3 Lives"
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="timeout" from="ObstacleTimer" to="." method="_on_obstacle_timer_timeout"]
+[connection signal="timeout" from="PowerUpTimer" to="." method="_on_powerup_timer_timeout"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends Node2D
+
+# 🎮 DINO RUNNER - MAIN GAME SCRIPT
+
+# ⚙️ GAME SETTINGS - CUSTOMIZE HERE!
+const OBSTACLE_SPAWN_TIME_MIN = 1.0  # Minimum time between obstacles
+const OBSTACLE_SPAWN_TIME_MAX = 2.5  # Maximum time between obstacles
+const POWERUP_SPAWN_TIME = 8.0  # How often power-ups appear
+const IMMUNITY_DURATION = 5.0  # How long shield lasts
+
+@onready var dino: CharacterBody2D = $Dino
+@onready var obstacle_timer: Timer = $ObstacleTimer
+@onready var powerup_timer: Timer = $PowerUpTimer
+@onready var score_label: Label = $UI/ScoreLabel
+@onready var lives_label: Label = $UI/LivesLabel
+@onready var game_over_panel: Panel = $UI/GameOverPanel
+
+var obstacle_scene = preload(\"res://dino_runner/Obstacle.tscn\")
+var powerup_scene = preload(\"res://dino_runner/PowerUp.tscn\")
+
+var score: int = 0
+var lives: int = 3
+
+func _ready() -> void:
+	AdManager.show_banner_ad()
+	dino.floor_stop_on_slope = false
+	powerup_timer.wait_time = POWERUP_SPAWN_TIME
+
+func _process(_delta: float) -> void:
+	# Check collision with obstacles
+	for obstacle in get_tree().get_nodes_in_group(\"obstacle\"):
+		if obstacle is Area2D and obstacle.overlaps_body(dino):
+			if not dino.is_immune:
+				take_damage()
+			obstacle.queue_free()
+	
+	# Check collision with power-ups
+	for powerup in get_tree().get_nodes_in_group(\"powerup\"):
+		if powerup is Area2D and powerup.overlaps_body(dino):
+			collect_powerup(powerup)
+
+func _on_obstacle_timer_timeout() -> void:
+	# 🎲 SPAWN RANDOM OBSTACLE TYPE
+	var obstacle = obstacle_scene.instantiate()
+	
+	# Choose random obstacle type (0, 1, or 2)
+	var random_type = randi() % 3
+	obstacle.setup(random_type)
+	
+	obstacle.position = Vector2(850, 480)
+	obstacle.add_to_group(\"obstacle\")
+	add_child(obstacle)
+	
+	score += 1
+	score_label.text = \"Score: \" + str(score)
+	
+	# Randomize next spawn time
+	obstacle_timer.wait_time = randf_range(OBSTACLE_SPAWN_TIME_MIN, OBSTACLE_SPAWN_TIME_MAX)
+
+func _on_powerup_timer_timeout() -> void:
+	# 🎁 SPAWN RANDOM POWER-UP
+	var powerup = powerup_scene.instantiate()
+	
+	# Choose random power-up type (0 or 1)
+	var random_type = randi() % 2
+	powerup.setup(random_type)
+	
+	powerup.position = Vector2(850, 400)
+	powerup.add_to_group(\"powerup\")
+	add_child(powerup)
+
+func collect_powerup(powerup: Area2D) -> void:
+	# 💎 HANDLE POWER-UP COLLECTION
+	match powerup.powerup_type:
+		0:  # Shield
+			dino.grant_immunity(IMMUNITY_DURATION)
+		1:  # Extra Life
+			lives += 1
+			lives_label.text = \"Lives: \" + str(lives)
+	
+	powerup.queue_free()
+
+func take_damage() -> void:
+	lives -= 1
+	lives_label.text = \"Lives: \" + str(lives)
+	
+	if lives <= 0:
+		game_over()
+
+func game_over() -> void:
+	get_tree().paused = true
+	game_over_panel.visible = true
+	obstacle_timer.stop()
+	powerup_timer.stop()
+
+func _on_watch_ad_pressed() -> void:
+	if AdManager.is_reward_ad_ready():
+		AdManager.show_reward_ad()
+		await AdManager.ad_rewarded
+		lives += 3
+		lives_label.text = \"Lives: \" + str(lives)
+		game_over_panel.visible = false
+		get_tree().paused = false
+		obstacle_timer.start()
+		powerup_timer.start()
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_menu_pressed() -> void:
+	get_tree().paused = false
+	AdManager.hide_banner_ad()
+	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+"
+
+# ==========================================
+# DINO_EXPLORER/PLAYER.GD
+# ==========================================
+# Save as: dino_explorer/Player.gd
+
+extends CharacterBody2D
+
+# ⚙️ PLAYER MOVEMENT SETTINGS
+const SPEED = 150.0
+
+func _physics_process(_delta: float) -> void:
+	var direction = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	velocity = direction * SPEED
+	move_and_slide()
+
+# ==========================================
+# DINO_EXPLORER/PLAYER.TSCN
+# ==========================================
+# Save as: dino_explorer/Player.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://player"]
+
+[ext_resource type="Script" path="res://dino_explorer/Player.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(30, 30)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+color = Color(0.2, 0.8, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+# ==========================================
+# DINO_EXPLORER/ENEMY.GD
+# ==========================================
+# Save as: dino_explorer/Enemy.gd
+
+extends CharacterBody2D
+
+# ⚙️ ENEMY AI SETTINGS
+const SPEED = 80.0
+const CHASE_RANGE = 200.0  # How close player must be to chase
+const ATTACK_RANGE = 40.0  # How close to damage player
+
+var player: CharacterBody2D = null
+var patrol_direction: Vector2 = Vector2.RIGHT
+
+func _ready() -> void:
+	# Random initial patrol direction
+	patrol_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+
+func _physics_process(delta: float) -> void:
+	if player == null:
+		return
+	
+	var distance_to_player = position.distance_to(player.position)
+	
+	# 🎯 CHASE PLAYER if close enough
+	if distance_to_player < CHASE_RANGE:
+		var direction = (player.position - position).normalized()
+		velocity = direction * SPEED
+		$ColorRect.color = Color(1.0, 0.3, 0.3)  # Red when chasing
+	else:
+		# 🚶 PATROL when player is far
+		velocity = patrol_direction * (SPEED * 0.5)
+		$ColorRect.color = Color(0.8, 0.2, 0.2)  # Darker when patrolling
+		
+		# Change direction randomly
+		if randf() < 0.01:
+			patrol_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+	
+	move_and_slide()
+
+func set_player(p: CharacterBody2D) -> void:
+	player = p
+
+# ==========================================
+# DINO_EXPLORER/ENEMY.TSCN
+# ==========================================
+# Save as: dino_explorer/Enemy.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://enemy"]
+
+[ext_resource type="Script" path="res://dino_explorer/Enemy.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 15.0
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_1")
+
+# ==========================================
+# DINO_EXPLORER/PETDINO.GD
+# ==========================================
+# Save as: dino_explorer/PetDino.gd
+
+extends Area2D
+
+# ⚙️ PET DINO SETTINGS
+var can_pet: bool = true
+
+signal petted
+
+func _ready() -> void:
+	$Label.text = \"Press SPACE to pet\"
+	$Label.visible = false
+
+func _on_body_entered(body: Node2D) -> void:
+	if body.name == \"Player\" and can_pet:
+		$Label.visible = true
+
+func _on_body_exited(body: Node2D) -> void:
+	if body.name == \"Player\":
+		$Label.visible = false
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"ui_accept\") and can_pet and $Label.visible:
+		pet()
+
+func pet() -> void:
+	can_pet = false
+	$ColorRect.color = Color(1.0, 0.84, 0.0)  # Turn gold
+	$Label.text = \"❤️ Pet!\"
+	petted.emit()
+	
+	await get_tree().create_timer(2.0).timeout
+	queue_free()
+
+# ==========================================
+# DINO_EXPLORER/PETDINO.TSCN
+# ==========================================
+# Save as: dino_explorer/PetDino.tscn
+
+[gd_scene load_steps=3 format=3 uid="uid://petdino"]
+
+[ext_resource type="Script" path="res://dino_explorer/PetDino.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(40, 40)
+
+[node name="PetDino" type="Area2D"]
+script = ExtResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(0.4, 0.8, 0.4, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -60.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = -20.0
+text = "Press SPACE to pet"
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+
+# ==========================================
+# DINO_EXPLORER/EXPLORERGAME.TSCN & SCRIPT
+# ==========================================
+# Save as: dino_explorer/ExplorerGame.tscn
+
+[gd_scene load_steps=4 format=3 uid="uid://explorergame"]
+
+[ext_resource type="PackedScene" uid="uid://player" path="res://dino_explorer/Player.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://enemy" path="res://dino_explorer/Enemy.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://petdino" path="res://dino_explorer/PetDino.tscn" id="3"]
+
+[node name="ExplorerGame" type="Node2D"]
+script = SubResource("GDScript_1")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.53, 0.81, 0.92, 1)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(400, 300)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="TopWall" type="ColorRect" parent="Walls"]
+offset_right = 800.0
+offset_bottom = 20.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="BottomWall" type="ColorRect" parent="Walls"]
+offset_top = 580.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="LeftWall" type="ColorRect" parent="Walls"]
+offset_right = 20.0
+offset_bottom = 600.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="RightWall" type="ColorRect" parent="Walls"]
+offset_left = 780.0
+offset_right = 800.0
+offset_bottom = 600.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Obstacles" type="Node2D" parent="."]
+
+[node name="Obstacle1" type="ColorRect" parent="Obstacles"]
+offset_left = 200.0
+offset_top = 150.0
+offset_right = 250.0
+offset_bottom = 200.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="Obstacle2" type="ColorRect" parent="Obstacles"]
+offset_left = 500.0
+offset_top = 350.0
+offset_right = 600.0
+offset_bottom = 400.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="Obstacle3" type="ColorRect" parent="Obstacles"]
+offset_left = 100.0
+offset_top = 450.0
+offset_right = 180.0
+offset_bottom = 500.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="PetSpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 220.0
+offset_bottom = 60.0
+text = "Dinos Petted: 0"
+
+[node name="LivesLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 50.0
+offset_right = 120.0
+offset_bottom = 90.0
+text = "Lives: 3"
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Game Over!"
+horizontal_alignment = 1
+
+[node name="WatchAdButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Watch Ad - Get 3 Lives"
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Restart"
+
+[node name="MenuButton" type="Button" parent="UI/GameOverPanel/VBox"]
+layout_mode = 2
+text = "Main Menu"
+
+[connection signal="timeout" from="PetSpawnTimer" to="." method="_on_pet_spawn_timer_timeout"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
+
+[sub_resource type="GDScript" id="GDScript_1"]
+script/source = "extends Node2D
+
+# 🎮 DINO EXPLORER - MAIN GAME SCRIPT
+
+# ⚙️ GAME SETTINGS - CUSTOMIZE HERE!
+const ENEMY_COUNT = 3  # Number of aggressive dinos
+const PET_SPAWN_TIME = 10.0  # How often friendly dinos appear
+const DAMAGE_COOLDOWN = 1.0  # Seconds of invincibility after hit
+
+@onready var player: CharacterBody2D = $Player
+@onready var pet_spawn_timer: Timer = $PetSpawnTimer
+@onready var score_label: Label = $UI/ScoreLabel
+@onready var lives_label: Label = $UI/LivesLabel
+@onready var game_over_panel: Panel = $UI/GameOverPanel
+
+var enemy_scene = preload(\"res://dino_explorer/Enemy.tscn\")
+var pet_scene = preload(\"res://dino_explorer/PetDino.tscn\")
+
+var dinos_petted: int = 0
+var lives: int = 3
+var can_take_damage: bool = true
+
+func _ready() -> void:
+	AdManager.show_banner_ad()
+	spawn_enemies()
+	pet_spawn_timer.wait_time = PET_SPAWN_TIME
+
+func spawn_enemies() -> void:
+	# 🦖 SPAWN AGGRESSIVE DINOS
+	for i in range(ENEMY_COUNT):
+		var enemy = enemy_scene.instantiate()
+		# Random position away from player
+		var random_pos = Vector2(
+			randf_range(100, 700),
+			randf_range(100, 500)
+		)
+		enemy.position = random_pos
+		enemy.set_player(player)
+		enemy.add_to_group(\"enemy\")
+		add_child(enemy)
+
+func _process(_delta: float) -> void:
+	# Check collision with enemies
+	for enemy in get_tree().get_nodes_in_group(\"enemy\"):
+		if enemy is CharacterBody2D:
+			var distance = player.position.distance_to(enemy.position)
+			if distance < 30 and can_take_damage:
+				take_damage()
+
+func _on_pet_spawn_timer_timeout() -> void:
+	# 💚 SPAWN FRIENDLY DINO TO PET
+	var pet = pet_scene.instantiate()
+	# Random position
+	pet.position = Vector2(
+		randf_range(100, 700),
+		randf_range(100, 500)
+	)
+	pet.petted.connect(_on_dino_petted)
+	add_child(pet)
+
+func _on_dino_petted() -> void:
+	dinos_petted += 1
+	score_label.text = \"Dinos Petted: \" + str(dinos_petted)
+
+func take_damage() -> void:
+	if not can_take_damage:
+		return
+	
+	lives -= 1
+	lives_label.text = \"Lives: \" + str(lives)
+	can_take_damage = false
+	
+	# Flash player
+	player.modulate = Color(1, 0, 0, 0.5)
+	await get_tree().create_timer(DAMAGE_COOLDOWN).timeout
+	player.modulate = Color(1, 1, 1, 1)
+	can_take_damage = true
+	
+	if lives <= 0:
+		game_over()
+
+func game_over() -> void:
+	get_tree().paused = true
+	game_over_panel.visible = true
+	pet_spawn_timer.stop()
+
+func _on_watch_ad_pressed() -> void:
+	if AdManager.is_reward_ad_ready():
+		AdManager.show_reward_ad()
+		await AdManager.ad_rewarded
+		lives += 3
+		lives_label.text = \"Lives: \" + str(lives)
+		game_over_panel.visible = false
+		get_tree().paused = false
+		pet_spawn_timer.start()
+
+func _on_restart_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_menu_pressed() -> void:
+	get_tree().paused = false
+	AdManager.hide_banner_ad()
+	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+"
