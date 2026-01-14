@@ -19,9 +19,7 @@ func _ready() -> void:
     # Get reference to game node
     await get_tree().process_frame
     game_node = get_tree().current_scene
-    
-    if animation_player:
-        animation_player.play("RESET")
+    # Animation player ready for future sprite-based animations
 
 func _physics_process(delta: float) -> void:
     if player == null:

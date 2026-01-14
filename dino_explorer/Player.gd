@@ -8,9 +8,8 @@ const SPEED = 150.0
 var time: float = 0.0
 
 func _ready() -> void:
-    # Simple idle animation (bounce)
-    if animation_player:
-        animation_player.play("RESET")
+    # Animation player ready for future sprite-based animations
+    pass
 
 func _physics_process(delta: float) -> void:
     var direction = TouchInputHandler.get_movement_input()

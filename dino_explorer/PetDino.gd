@@ -16,9 +16,7 @@ func _ready() -> void:
     $Label.visible = false
     original_position = position
     wander_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-    
-    if animation_player:
-        animation_player.play("RESET")
+    # Animation player ready for future sprite-based animations
 
 func _process(delta: float) -> void:
     # Gentle wandering
