@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dino"]
 
-[ext_resource type="Script" path="res://dino_runner/Dino.gd" id="1"]
+[ext_resource type="Script" uid="uid://dw1alem3tvsn" path="res://dino_runner/Dino.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(30, 40)
