@@ -15,12 +15,18 @@ var OBSTACLE_SPAWN_TIME_MIN = 1.0  # Minimum time between obstacles
 var OBSTACLE_SPAWN_TIME_MAX = 2.5  # Maximum time between obstacles
 const POWERUP_SPAWN_TIME = 8.0  # How often power-ups appear
 const IMMUNITY_DURATION = 5.0  # How long shield lasts
+const SPEED_INCREASE_INTERVAL = 5.0  # How often to increase speed
+const SPEED_INCREASE_AMOUNT = 0.05  # How much to increase speed each time
+const MAX_SPEED_MULTIPLIER = 2.0  # Cap at 2x speed
 
 @onready var dino: CharacterBody2D = $Dino
 @onready var obstacle_timer: Timer = $ObstacleTimer
 @onready var powerup_timer: Timer = $PowerUpTimer
+@onready var speed_timer: Timer = $SpeedTimer
 @onready var score_label: Label = $UI/ScoreLabel
 @onready var lives_label: Label = $UI/LivesLabel
+@onready var speed_label: Label = $UI/SpeedLabel
+@onready var jumps_label: Label = $UI/JumpsLabel
 @onready var game_over_panel: Panel = $UI/GameOverPanel
 @onready var pause_menu = $PauseMenu
 
@@ -30,11 +36,17 @@ var tutorial_scene = preload(\"res://dino_runner/RunnerTutorial.tscn\")
 
 var score: int = 0
 var lives: int = 3
+var speed_multiplier: float = 1.0
 
 func _ready() -> void:
     AdManager.show_banner_ad()
     dino.floor_stop_on_slope = false
     powerup_timer.wait_time = POWERUP_SPAWN_TIME
+    speed_timer.wait_time = SPEED_INCREASE_INTERVAL
+    
+    # Initialize UI
+    speed_label.text = "Speed: x1.0"
+    jumps_label.text = "Jumps: 2"
     
     # Apply difficulty settings
     var difficulty_multiplier = SettingsManager.get_difficulty_multiplier()
@@ -53,6 +65,7 @@ func start_game() -> void:
     # Start normal game loop
     obstacle_timer.start()
     powerup_timer.start()
+    speed_timer.start()
 
 func show_tutorial() -> void:
     var tutorial = tutorial_scene.instantiate()
@@ -60,6 +73,11 @@ func show_tutorial() -> void:
     TutorialManager.show_tutorial(\"runner\")
 
 func _process(_delta: float) -> void:
+    # Update HUD
+    jumps_label.text = "Jumps: " + str(dino.get_jumps_remaining())
+    speed_label.text = "Speed: x" + str(snapped(speed_multiplier, 0.01))
+    score_label.text = "Score: " + str(score) + "  Speed: x" + str(snapped(speed_multiplier, 0.01))
+    
     # Check collision with obstacles
     for obstacle in get_tree().get_nodes_in_group(\"obstacle\"):
         if obstacle is Area2D and obstacle.overlaps_body(dino):
@@ -80,6 +98,10 @@ func _on_obstacle_timer_timeout() -> void:
     var random_type = randi() % 3
     obstacle.setup(random_type)
     
+    # Apply speed multiplier to obstacle speed
+    if obstacle.has_method(\"set_speed_multiplier\"):
+        obstacle.set_speed_multiplier(speed_multiplier)
+    
     obstacle.position = Vector2(850, 480)
     obstacle.add_to_group(\"obstacle\")
     add_child(obstacle)
@@ -87,8 +109,10 @@ func _on_obstacle_timer_timeout() -> void:
     score += 1
     score_label.text = \"Score: \" + str(score)
     
-    # Randomize next spawn time
-    obstacle_timer.wait_time = randf_range(OBSTACLE_SPAWN_TIME_MIN, OBSTACLE_SPAWN_TIME_MAX)
+    # Randomize next spawn time (faster spawns with higher speed)
+    var adjusted_min = OBSTACLE_SPAWN_TIME_MIN / speed_multiplier
+    var adjusted_max = OBSTACLE_SPAWN_TIME_MAX / speed_multiplier
+    obstacle_timer.wait_time = randf_range(adjusted_min, adjusted_max)
 
 func _on_powerup_timer_timeout() -> void:
     # 🎁 SPAWN RANDOM POWER-UP
@@ -125,6 +149,9 @@ func game_over() -> void:
     game_over_panel.visible = true
     obstacle_timer.stop()
     powerup_timer.stop()
+    speed_timer.stop()
+    pause_menu.is_paused = false
+    pause_menu.hide_pause_menu()
 
 func _on_watch_ad_pressed() -> void:
     if AdManager.is_reward_ad_ready():
@@ -136,6 +163,7 @@ func _on_watch_ad_pressed() -> void:
         get_tree().paused = false
         obstacle_timer.start()
         powerup_timer.start()
+        speed_timer.start()
 
 func _on_restart_pressed() -> void:
     get_tree().paused = false
@@ -145,6 +173,10 @@ func _on_menu_pressed() -> void:
     get_tree().paused = false
     AdManager.hide_banner_ad()
     get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+
+func _on_speed_timer_timeout() -> void:
+    # Gradually increase game speed over time
+    speed_multiplier = min(MAX_SPEED_MULTIPLIER, speed_multiplier + SPEED_INCREASE_AMOUNT)
 
 # Pause menu integration
 func _on_pause_menu_resume_requested() -> void:
@@ -195,13 +227,19 @@ position = Vector2(100, 480)
 
 [node name="ObstacleTimer" type="Timer" parent="."]
 wait_time = 1.5
-autostart = true
+autostart = false
 
 [node name="PowerUpTimer" type="Timer" parent="."]
 wait_time = 5.0
-autostart = true
+autostart = false
+
+[node name="SpeedTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = false
 
 [node name="UI" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 10
 
 [node name="ScoreLabel" type="Label" parent="UI"]
 offset_left = 20.0
@@ -216,6 +254,21 @@ offset_top = 50.0
 offset_right = 120.0
 offset_bottom = 90.0
 text = "Lives: 3"
+
+[node name="SpeedLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 80.0
+offset_right = 160.0
+offset_bottom = 120.0
+text = "Speed: x1.0"
+
+[node name="JumpsLabel" type="Label" parent="UI"]
+offset_left = 680.0
+offset_top = 20.0
+offset_right = 780.0
+offset_bottom = 60.0
+text = "Jumps: 2"
+horizontal_alignment = 2
 
 [node name="GameOverPanel" type="Panel" parent="UI"]
 visible = false
@@ -259,6 +312,7 @@ text = "Main Menu"
 
 [connection signal="timeout" from="ObstacleTimer" to="." method="_on_obstacle_timer_timeout"]
 [connection signal="timeout" from="PowerUpTimer" to="." method="_on_powerup_timer_timeout"]
+[connection signal="timeout" from="SpeedTimer" to="." method="_on_speed_timer_timeout"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]

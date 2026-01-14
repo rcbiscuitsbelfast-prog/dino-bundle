@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://flappygame"]
+[gd_scene load_steps=5 format=3 uid="uid://flappygame"]
 
 [ext_resource type="PackedScene" uid="uid://bird" path="res://flappy_dino/Bird.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://pipepair" path="res://flappy_dino/PipePair.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://pausemenu" path="res://shared/PauseMenu.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://flappyautotutorial" path="res://flappy_dino/AutoTutorialPanel.tscn" id="4"]
 
 [sub_resource type="GDScript" id="GDScript_1"]
 script/source = "extends Node2D
@@ -32,6 +33,7 @@ var tutorial_scene = preload(\"res://flappy_dino/FlappyTutorial.tscn\")
 
 var score: int = 0
 var lives: int = 3
+var game_started: bool = false
 
 # Parallax scrolling positions
 var far_bg_offset: float = 0.0
@@ -44,14 +46,17 @@ func _ready() -> void:
     PIPE_SPAWN_INTERVAL = 2.0 / SettingsManager.get_obstacle_spawn_multiplier()
     spawn_timer.wait_time = PIPE_SPAWN_INTERVAL
     
-    # Show tutorial if needed
+    # Auto-pause and show tutorial on startup
+    get_tree().paused = true
     if TutorialManager.should_show_tutorial(\"flappy\"):
         show_tutorial()
     else:
-        start_game()
+        show_auto_tutorial()
 
 func start_game() -> void:
     # Start normal game loop
+    game_started = true
+    get_tree().paused = false
     spawn_timer.start()
 
 func show_tutorial() -> void:
@@ -59,7 +64,20 @@ func show_tutorial() -> void:
     add_child(tutorial)
     TutorialManager.show_tutorial(\"flappy\")
 
+func show_auto_tutorial() -> void:
+    # Show simple \"TAP TO START\" tutorial
+    $AutoTutorialPanel.visible = true
+    $AutoTutorialPanel.start_pressed.connect(_on_start_game_pressed)
+
+func _on_start_game_pressed() -> void:
+    $AutoTutorialPanel.visible = false
+    start_game()
+
 func _process(delta: float) -> void:
+    # Check if bird falls off screen (death without collision)
+    if bird.position.y > 600:
+        take_damage()
+    
     # 🎨 PARALLAX SCROLLING - Creates depth effect
     # The far background scrolls slowest, mid background faster
     far_bg_offset -= FAR_BG_SPEED * delta
@@ -78,8 +96,12 @@ func _process(delta: float) -> void:
 func _on_spawn_timer_timeout() -> void:
     # Create new pipe obstacle
     var pipe = pipe_scene.instantiate()
-    pipe.position = Vector2(850, 300)
+    pipe.position = Vector2(850, 0)
+    pipe.passed.connect(_on_pipe_passed)
     add_child(pipe)
+
+func _on_pipe_passed() -> void:
+    # Increment score when bird successfully passes a pipe
     score += 1
     score_label.text = \"Score: \" + str(score)
 
@@ -98,6 +120,8 @@ func game_over() -> void:
     get_tree().paused = true
     game_over_panel.visible = true
     spawn_timer.stop()
+    pause_menu.is_paused = false
+    pause_menu.hide_pause_menu()
 
 func _on_watch_ad_pressed() -> void:
     if AdManager.is_reward_ad_ready():
@@ -160,27 +184,21 @@ offset_right = 800.0
 offset_bottom = 600.0
 color = Color(0.53, 0.81, 0.92, 0.5)
 
-[node name="Ground" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
-shape = SubResource("RectangleShape2D_1")
-position = Vector2(400, 550)
-
-[node name="GroundVisual" type="ColorRect" parent="Ground"]
-offset_right = 800.0
-offset_bottom = 50.0
-color = Color(0.4, 0.3, 0.2, 1)
-
 [node name="Bird" parent="." instance=ExtResource("1")]
 position = Vector2(150, 300)
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 2.0
-autostart = true
+autostart = false
 
 [node name="PauseMenu" parent="." instance=ExtResource("3")]
 
+[node name="AutoTutorialPanel" parent="." instance=ExtResource("4")]
+visible = false
+
 [node name="UI" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 10
 
 [node name="ScoreLabel" type="Label" parent="UI"]
 offset_left = 20.0

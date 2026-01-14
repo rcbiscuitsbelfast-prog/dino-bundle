@@ -2,26 +2,21 @@
 
 [ext_resource type="Script" uid="uid://runnertutorialscript" path="res://dino_runner/RunnerTutorial.gd" id="1"]
 
-[node name="RunnerTutorial" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="RunnerTutorial" type="CanvasLayer"]
+process_mode = 3
+layer = 250
 script = ExtResource("1")
 
 [node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 0
 color = Color(0, 0, 0, 0.8)
 
 [node name="TutorialPanel" type="Panel" parent="."]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -35,7 +30,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="TutorialPanel"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -51,15 +45,7 @@ horizontal_alignment = 1
 
 [node name="Instructions" type="Label" parent="TutorialPanel/VBox"]
 layout_mode = 2
-text = "Jump over obstacles and collect power-ups!
-
-🎮 CONTROLS:
-• Tap/Space to jump
-• Avoid obstacles (red rocks)
-• Collect shields (blue) for protection
-• Collect hearts for extra lives
-
-🏃 TIP: Time your jumps carefully!"
+text = "Jump over obstacles and collect power-ups!\n\n🎮 CONTROLS:\n• Tap/Space to jump\n• Avoid obstacles (red rocks)\n• Collect shields (blue) for protection\n• Collect hearts for extra lives\n\n🏃 TIP: Time your jumps carefully!"
 horizontal_alignment = 1
 
 [node name="GotItButton" type="Button" parent="TutorialPanel/VBox"]
