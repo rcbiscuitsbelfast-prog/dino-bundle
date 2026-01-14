@@ -215,8 +215,10 @@ limit_bottom = 1800
 position_smoothing_enabled = true
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 2400.0
-offset_bottom = 1800.0
+offset_left = 9.0
+offset_top = 13.0
+offset_right = 2409.0
+offset_bottom = 1813.0
 color = Color(0.53, 0.81, 0.92, 1)
 
 [node name="Player" parent="." instance=ExtResource("1")]
