@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://flappyautotutorial"]
+[gd_scene load_steps=2 format=3 uid="uid://c4pf6iryk2ktn"]
 
 [ext_resource type="Script" path="res://flappy_dino/AutoTutorialPanel.gd" id="1"]
 

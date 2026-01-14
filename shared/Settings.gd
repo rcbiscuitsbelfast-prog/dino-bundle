@@ -100,4 +100,8 @@ func _on_haptics_toggled(enabled: bool) -> void:
     haptics_toggle.text = enabled ? "On" : "Off"
 
 func _on_back_pressed() -> void:
+<<<<<<< Updated upstream
     get_tree().change_scene_to_file("res://launcher/Launcher.tscn")
+=======
+	get_tree().change_scene_to_file("res://launcher/Launcher.tscn")
+>>>>>>> Stashed changes
