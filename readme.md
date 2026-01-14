@@ -68,9 +68,9 @@ dino-bundle/
 │   ├── PetDino.gd & PetDino.tscn
 │   └── ExplorerGame.tscn
 └── Assets/               # Game assets
-    ├── download/         # Dino sprite collection
-    ├── free_blue_dino_side_frakassets/
-    └── FreeDinoSprite/
+	├── download/         # Dino sprite collection
+	├── free_blue_dino_side_frakassets/
+	└── FreeDinoSprite/
 ```
 
 ## 🛠️ Setup Instructions
