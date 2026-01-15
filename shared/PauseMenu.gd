@@ -14,9 +14,11 @@ signal menu_requested
 @onready var resume_button: Button = $PauseOverlay/PausePanel/VBox/ResumeButton
 @onready var restart_button: Button = $PauseOverlay/PausePanel/VBox/RestartButton
 @onready var settings_button: Button = $PauseOverlay/PausePanel/VBox/SettingsButton
+@onready var remove_ads_button: Button = $PauseOverlay/PausePanel/VBox/RemoveAdsButton
 @onready var menu_button: Button = $PauseOverlay/PausePanel/VBox/MenuButton
 
 var is_paused: bool = false
+var remove_ads_dialog_scene = preload("res://shared/RemoveAdsDialog.tscn")
 
 func _ready() -> void:
     hide_pause_menu()
@@ -26,7 +28,11 @@ func connect_signals() -> void:
     resume_button.pressed.connect(_on_resume_pressed)
     restart_button.pressed.connect(_on_restart_pressed)
     settings_button.pressed.connect(_on_settings_pressed)
+    remove_ads_button.pressed.connect(_on_remove_ads_pressed)
     menu_button.pressed.connect(_on_menu_pressed)
+    
+    # Update button text if ads already removed
+    update_remove_ads_button()
 
 func _unhandled_input(event: InputEvent) -> void:
     # Toggle pause with ESC key
@@ -80,3 +86,21 @@ func _on_settings_pressed() -> void:
 func _on_menu_pressed() -> void:
     resume_game()  # Unpause first
     menu_requested.emit()
+
+func _on_remove_ads_pressed() -> void:
+    # Show remove ads dialog
+    var dialog = remove_ads_dialog_scene.instantiate()
+    get_tree().root.add_child(dialog)
+    dialog.purchase_confirmed.connect(_on_purchase_confirmed)
+    dialog.purchase_cancelled.connect(_on_purchase_cancelled)
+
+func _on_purchase_confirmed() -> void:
+    update_remove_ads_button()
+
+func _on_purchase_cancelled() -> void:
+    pass
+
+func update_remove_ads_button() -> void:
+    if AdManager.is_ads_removed():
+        remove_ads_button.text = "✓ Ads Removed"
+        remove_ads_button.disabled = true
