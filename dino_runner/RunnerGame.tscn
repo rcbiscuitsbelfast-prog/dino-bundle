@@ -32,170 +32,185 @@ const MAX_SPEED_MULTIPLIER = 2.0  # Cap at 2x speed
 var obstacle_scene = preload(\"res://dino_runner/Obstacle.tscn\")
 var powerup_scene = preload(\"res://dino_runner/PowerUp.tscn\")
 var tutorial_scene = preload(\"res://dino_runner/RunnerTutorial.tscn\")
+var remove_ads_dialog_scene = preload(\"res://shared/RemoveAdsDialog.tscn\")
 
 var score: int = 0
 var lives: int = 3
 var speed_multiplier: float = 1.0
 
 func _ready() -> void:
-	AdManager.show_banner_ad()
-	dino.floor_stop_on_slope = false
-	powerup_timer.wait_time = POWERUP_SPAWN_TIME
-	speed_timer.wait_time = SPEED_INCREASE_INTERVAL
-	
-	# Initialize UI
-	speed_label.text = \"Speed: x1.0\"
-	jumps_label.text = \"Jumps: 2\"
-	lives_label.text = \"Lives: 3\"
-	score_label.text = \"Score: 0\"
-	
-	# Apply difficulty settings
-	var difficulty_multiplier = SettingsManager.get_difficulty_multiplier()
-	var spawn_multiplier = SettingsManager.get_obstacle_spawn_multiplier()
-	
-	OBSTACLE_SPAWN_TIME_MIN = 1.0 * spawn_multiplier
-	OBSTACLE_SPAWN_TIME_MAX = 2.5 * spawn_multiplier
-	
-	# Show tutorial if needed
-	if TutorialManager.should_show_tutorial(\"runner\"):
-		show_tutorial()
-	else:
-		start_game()
+    AdManager.show_banner_ad()
+    dino.floor_stop_on_slope = false
+    powerup_timer.wait_time = POWERUP_SPAWN_TIME
+    speed_timer.wait_time = SPEED_INCREASE_INTERVAL
+    
+    # Initialize UI
+    speed_label.text = \"Speed: x1.0\"
+    jumps_label.text = \"Jumps: 2\"
+    update_lives_display()
+    score_label.text = \"Score: 0\"
+    
+    # Apply difficulty settings
+    var difficulty_multiplier = SettingsManager.get_difficulty_multiplier()
+    var spawn_multiplier = SettingsManager.get_obstacle_spawn_multiplier()
+    
+    OBSTACLE_SPAWN_TIME_MIN = 1.0 * spawn_multiplier
+    OBSTACLE_SPAWN_TIME_MAX = 2.5 * spawn_multiplier
+    
+    # Show tutorial if needed
+    if TutorialManager.should_show_tutorial(\"runner\"):
+        show_tutorial()
+    else:
+        start_game()
 
 func start_game() -> void:
-	# Start normal game loop
-	obstacle_timer.start()
-	powerup_timer.start()
-	speed_timer.start()
+    # Start normal game loop
+    obstacle_timer.start()
+    powerup_timer.start()
+    speed_timer.start()
 
 func show_tutorial() -> void:
-	var tutorial = tutorial_scene.instantiate()
-	add_child(tutorial)
-	TutorialManager.show_tutorial(\"runner\")
+    var tutorial = tutorial_scene.instantiate()
+    add_child(tutorial)
+    TutorialManager.show_tutorial(\"runner\")
 
 func _process(_delta: float) -> void:
-	# Update HUD
-	jumps_label.text = \"Jumps: \" + str(dino.get_jumps_remaining())
-	speed_label.text = \"Speed: x\" + str(snapped(speed_multiplier, 0.01))
-	score_label.text = \"Score: \" + str(score) + \"  Speed: x\" + str(snapped(speed_multiplier, 0.01))
-	
-	# Check collision with obstacles
-	for obstacle in get_tree().get_nodes_in_group(\"obstacle\"):
-		if obstacle is Area2D and obstacle.overlaps_body(dino):
-			if not dino.is_immune:
-				take_damage()
-			obstacle.queue_free()
-	
-	# Check collision with power-ups
-	for powerup in get_tree().get_nodes_in_group(\"powerup\"):
-		if powerup is Area2D and powerup.overlaps_body(dino):
-			collect_powerup(powerup)
+    # Update HUD
+    jumps_label.text = \"Jumps: \" + str(dino.get_jumps_remaining())
+    speed_label.text = \"Speed: x\" + str(snapped(speed_multiplier, 0.01))
+    score_label.text = \"Score: \" + str(score) + \"  Speed: x\" + str(snapped(speed_multiplier, 0.01))
+    
+    # Check collision with obstacles
+    for obstacle in get_tree().get_nodes_in_group(\"obstacle\"):
+        if obstacle is Area2D and obstacle.overlaps_body(dino):
+            if not dino.is_immune:
+                take_damage()
+            obstacle.queue_free()
+    
+    # Check collision with power-ups
+    for powerup in get_tree().get_nodes_in_group(\"powerup\"):
+        if powerup is Area2D and powerup.overlaps_body(dino):
+            collect_powerup(powerup)
 
 func _on_obstacle_timer_timeout() -> void:
-	# 🎲 SPAWN RANDOM OBSTACLE TYPE
-	var obstacle = obstacle_scene.instantiate()
-	
-	# Choose random obstacle type (0, 1, or 2)
-	var random_type = randi() % 3
-	obstacle.setup(random_type)
-	
-	# Apply speed multiplier to obstacle speed
-	if obstacle.has_method(\"set_speed_multiplier\"):
-		obstacle.set_speed_multiplier(speed_multiplier)
-	
-	obstacle.position = Vector2(850, 480)
-	obstacle.add_to_group(\"obstacle\")
-	add_child(obstacle)
-	
-	score += 1
-	score_label.text = \"Score: \" + str(score)
-	
-	# Randomize next spawn time (faster spawns with higher speed)
-	var adjusted_min = OBSTACLE_SPAWN_TIME_MIN / speed_multiplier
-	var adjusted_max = OBSTACLE_SPAWN_TIME_MAX / speed_multiplier
-	obstacle_timer.wait_time = randf_range(adjusted_min, adjusted_max)
+    # 🎲 SPAWN RANDOM OBSTACLE TYPE
+    var obstacle = obstacle_scene.instantiate()
+    
+    # Choose random obstacle type (0, 1, or 2)
+    var random_type = randi() % 3
+    obstacle.setup(random_type)
+    
+    # Apply speed multiplier to obstacle speed
+    if obstacle.has_method(\"set_speed_multiplier\"):
+        obstacle.set_speed_multiplier(speed_multiplier)
+    
+    obstacle.position = Vector2(850, 480)
+    obstacle.add_to_group(\"obstacle\")
+    add_child(obstacle)
+    
+    score += 1
+    score_label.text = \"Score: \" + str(score)
+    
+    # Randomize next spawn time (faster spawns with higher speed)
+    var adjusted_min = OBSTACLE_SPAWN_TIME_MIN / speed_multiplier
+    var adjusted_max = OBSTACLE_SPAWN_TIME_MAX / speed_multiplier
+    obstacle_timer.wait_time = randf_range(adjusted_min, adjusted_max)
 
 func _on_powerup_timer_timeout() -> void:
-	# 🎁 SPAWN RANDOM POWER-UP
-	var powerup = powerup_scene.instantiate()
-	
-	# Choose random power-up type (0 or 1)
-	var random_type = randi() % 2
-	powerup.setup(random_type)
-	
-	powerup.position = Vector2(850, 400)
-	powerup.add_to_group(\"powerup\")
-	add_child(powerup)
+    # 🎁 SPAWN RANDOM POWER-UP
+    var powerup = powerup_scene.instantiate()
+    
+    # Choose random power-up type (0 or 1)
+    var random_type = randi() % 2
+    powerup.setup(random_type)
+    
+    powerup.position = Vector2(850, 400)
+    powerup.add_to_group(\"powerup\")
+    add_child(powerup)
 
 func collect_powerup(powerup: Area2D) -> void:
-	# 💎 HANDLE POWER-UP COLLECTION
-	match powerup.powerup_type:
-		0:  # Shield
-			dino.grant_immunity(IMMUNITY_DURATION)
-		1:  # Extra Life
-			lives += 1
-			lives_label.text = \"Lives: \" + str(lives)
-	
-	powerup.queue_free()
+    # 💎 HANDLE POWER-UP COLLECTION
+    match powerup.powerup_type:
+        0:  # Shield
+            dino.grant_immunity(IMMUNITY_DURATION)
+        1:  # Extra Life
+            lives += 1
+            update_lives_display()
+    
+    powerup.queue_free()
 
 func take_damage() -> void:
-	lives -= 1
-	lives_label.text = \"Lives: \" + str(lives)
-	
-	if lives <= 0:
-		game_over()
+    # Check for unlimited lives mode
+    if SettingsManager.get_unlimited_lives():
+        return
+    
+    lives -= 1
+    update_lives_display()
+    
+    if lives <= 0:
+        game_over()
 
 func game_over() -> void:
-	get_tree().paused = true
-	game_over_panel.visible = true
-	obstacle_timer.stop()
-	powerup_timer.stop()
-	speed_timer.stop()
-	pause_menu.is_paused = false
-	pause_menu.hide_pause_menu()
+    get_tree().paused = true
+    game_over_panel.visible = true
+    obstacle_timer.stop()
+    powerup_timer.stop()
+    speed_timer.stop()
+    pause_menu.is_paused = false
+    pause_menu.hide_pause_menu()
 
 func _on_watch_ad_pressed() -> void:
-	if AdManager.is_reward_ad_ready():
-		AdManager.show_reward_ad()
-		await AdManager.ad_rewarded
-		lives += 3
-		lives_label.text = \"Lives: \" + str(lives)
-		game_over_panel.visible = false
-		get_tree().paused = false
-		obstacle_timer.start()
-		powerup_timer.start()
-		speed_timer.start()
+    if AdManager.is_reward_ad_ready():
+        AdManager.show_reward_ad()
+        await AdManager.ad_rewarded
+        lives += 3
+        update_lives_display()
+        game_over_panel.visible = false
+        get_tree().paused = false
+        obstacle_timer.start()
+        powerup_timer.start()
+        speed_timer.start()
 
 func _on_restart_pressed() -> void:
-	get_tree().paused = false
-	get_tree().reload_current_scene()
+    get_tree().paused = false
+    get_tree().reload_current_scene()
 
 func _on_menu_pressed() -> void:
-	get_tree().paused = false
-	AdManager.hide_banner_ad()
-	get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
+    get_tree().paused = false
+    AdManager.hide_banner_ad()
+    get_tree().change_scene_to_file(\"res://launcher/Launcher.tscn\")
 
 func _on_speed_timer_timeout() -> void:
-	# Gradually increase game speed over time
-	speed_multiplier = min(MAX_SPEED_MULTIPLIER, speed_multiplier + SPEED_INCREASE_AMOUNT)
+    # Gradually increase game speed over time
+    speed_multiplier = min(MAX_SPEED_MULTIPLIER, speed_multiplier + SPEED_INCREASE_AMOUNT)
 
 # Pause menu integration
 func _on_pause_menu_resume_requested() -> void:
-	# Resume game logic is handled by pause menu itself
-	pass
+    # Resume game logic is handled by pause menu itself
+    pass
 
 func _on_pause_menu_restart_requested() -> void:
-	_on_restart_pressed()
+    _on_restart_pressed()
 
 func _on_pause_menu_settings_requested() -> void:
-	get_tree().paused = false
-	get_tree().change_scene_to_file(\"res://shared/Settings.tscn\")
+    get_tree().paused = false
+    get_tree().change_scene_to_file(\"res://shared/Settings.tscn\")
 
 func _on_pause_menu_menu_requested() -> void:
-	_on_menu_pressed()
+    _on_menu_pressed()
 
 func _on_pause_button_pressed() -> void:
-	pause_menu.pause_game()
+    pause_menu.pause_game()
+
+func _on_remove_ads_pressed() -> void:
+    var dialog = remove_ads_dialog_scene.instantiate()
+    get_tree().root.add_child(dialog)
+
+func update_lives_display() -> void:
+    if SettingsManager.get_unlimited_lives():
+        lives_label.text = \"Lives: ∞\"
+    else:
+        lives_label.text = \"Lives: \" + str(lives)
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
@@ -314,6 +329,12 @@ custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 text = "Watch Ad - Get 3 Lives"
 
+[node name="RemoveAdsButton" type="Button" parent="UI/GameOverPanel/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+text = "Remove Ads - £1.00"
+
 [node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
@@ -333,5 +354,6 @@ text = "Main Menu"
 [connection signal="timeout" from="SpeedTimer" to="." method="_on_speed_timer_timeout"]
 [connection signal="pressed" from="UI/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RemoveAdsButton" to="." method="_on_remove_ads_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]

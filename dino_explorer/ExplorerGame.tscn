@@ -28,6 +28,7 @@ var enemy_scene = preload(\"res://dino_explorer/Enemy.tscn\")
 var pet_scene = preload(\"res://dino_explorer/PetDino.tscn\")
 var nest_scene = preload(\"res://dino_explorer/Nest.tscn\")
 var tutorial_scene = preload(\"res://dino_explorer/ExplorerTutorial.tscn\")
+var remove_ads_dialog_scene = preload(\"res://shared/RemoveAdsDialog.tscn\")
 
 var dinos_petted: int = 0
 var lives: int = 3
@@ -42,6 +43,9 @@ var dino_types = [
 
 func _ready() -> void:
     AdManager.show_banner_ad()
+    
+    # Update lives display for unlimited mode
+    update_lives_display()
     
     # Show tutorial if needed
     if TutorialManager.should_show_tutorial(\"explorer\"):
@@ -144,11 +148,15 @@ func _on_dino_petted() -> void:
     score_label.text = \"Dinos Petted: \" + str(dinos_petted)
 
 func take_damage() -> void:
+    # Check for unlimited lives mode
+    if SettingsManager.get_unlimited_lives():
+        return
+    
     if is_invincible:
         return
     
     lives -= 1
-    lives_label.text = \"Lives: \" + str(lives)
+    update_lives_display()
     is_invincible = true
     
     # Flash player red
@@ -175,7 +183,7 @@ func _on_watch_ad_pressed() -> void:
         AdManager.show_reward_ad()
         await AdManager.ad_rewarded
         lives += 3
-        lives_label.text = \"Lives: \" + str(lives)
+        update_lives_display()
         game_over_panel.visible = false
         get_tree().paused = false
         hatch_timer.start()
@@ -205,6 +213,16 @@ func _on_pause_menu_menu_requested() -> void:
 
 func _on_pause_button_pressed() -> void:
     pause_menu.pause_game()
+
+func _on_remove_ads_pressed() -> void:
+    var dialog = remove_ads_dialog_scene.instantiate()
+    get_tree().root.add_child(dialog)
+
+func update_lives_display() -> void:
+    if SettingsManager.get_unlimited_lives():
+        lives_label.text = \"Lives: ∞\"
+    else:
+        lives_label.text = \"Lives: \" + str(lives)
 "
 
 [node name="ExplorerGame" type="Node2D"]
@@ -341,6 +359,12 @@ custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 text = "Watch Ad - Get 3 Lives"
 
+[node name="RemoveAdsButton" type="Button" parent="UI/GameOverPanel/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+text = "Remove Ads - £1.00"
+
 [node name="RestartButton" type="Button" parent="UI/GameOverPanel/VBox"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
@@ -358,5 +382,6 @@ text = "Main Menu"
 [connection signal="timeout" from="HatchTimer" to="." method="_on_hatch_timer_timeout"]
 [connection signal="pressed" from="UI/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/WatchAdButton" to="." method="_on_watch_ad_pressed"]
+[connection signal="pressed" from="UI/GameOverPanel/VBox/RemoveAdsButton" to="." method="_on_remove_ads_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/RestartButton" to="." method="_on_restart_pressed"]
 [connection signal="pressed" from="UI/GameOverPanel/VBox/MenuButton" to="." method="_on_menu_pressed"]
