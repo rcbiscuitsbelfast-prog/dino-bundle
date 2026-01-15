@@ -74,7 +74,7 @@ shape = SubResource("CircleShape2D_1")
 one_way_collision_margin = 0.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.0586778, 0.067125)
+position = Vector2(-2, 2)
+scale = Vector2(0.137425, 0.14375)
 sprite_frames = SubResource("SpriteFrames_c4415")
 animation = &"fly"
-frame_progress = 0.605026

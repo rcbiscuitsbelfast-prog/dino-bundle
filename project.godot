@@ -31,6 +31,10 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Dino Game Bundle"
 
+[gui]
+
+theme/custom="uid://d1a01xhtvmic2"
+
 [input]
 
 ui_accept={

@@ -1,0 +1,7 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://by4s5jnxhs48"]
+
+[ext_resource type="Texture2D" uid="uid://7mjibc3hcuy2" path="res://shared/Adobe Express - file (1).png" id="1_gyu5l"]
+
+[resource]
+texture = ExtResource("1_gyu5l")
+region_rect = Rect2(41, 46.715, 340, 119.902)

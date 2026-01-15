@@ -95,7 +95,7 @@
   - Camera follows player position every frame
   - Smooth position interpolation enabled (speed: 5.0)
   - Camera limits prevent viewing outside world bounds
-    - Left: 0, Right: 2400, Top: 0, Bottom: 1800
+	- Left: 0, Right: 2400, Top: 0, Bottom: 1800
   - Camera is child of ExplorerGame root node
 - **Location**: `dino_explorer/ExplorerGame.tscn`, ExplorerGame.gd `_process()`
 

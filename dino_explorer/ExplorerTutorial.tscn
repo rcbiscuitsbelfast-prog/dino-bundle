@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://explorertutorial"]
+[gd_scene load_steps=2 format=3 uid="uid://ct8c2uj761xp0"]
 
-[ext_resource type="Script" uid="uid://explorertutorialscript" path="res://dino_explorer/ExplorerTutorial.gd" id="1"]
+[ext_resource type="Script" path="res://dino_explorer/ExplorerTutorial.gd" id="1"]
 
 [node name="ExplorerTutorial" type="CanvasLayer"]
 process_mode = 3
@@ -13,7 +13,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 0
 color = Color(0, 0, 0, 0.8)
 
 [node name="TutorialPanel" type="Panel" parent="."]
@@ -30,7 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="VBox" type="VBoxContainer" parent="TutorialPanel"]
-anchors_preset = 15
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -45,13 +44,24 @@ horizontal_alignment = 1
 
 [node name="Instructions" type="Label" parent="TutorialPanel/VBox"]
 layout_mode = 2
-text = "Move around to find friendly dinos and pet them!\nAvoid angry dinos that chase you!\n\n🎮 CONTROLS:\n• Arrow Keys / WASD to move\n• Touch joystick for mobile\n• Approach friendly dinos to pet them\n• Avoid red angry dinos!\n\n🦕 TIP: Collect hearts to restore lives!"
+text = "Move around to find friendly dinos and pet them!
+Avoid angry dinos that chase you!
+
+🎮 CONTROLS:
+• Arrow Keys / WASD to move
+• Touch joystick for mobile
+• Approach friendly dinos to pet them
+• Avoid red angry dinos!
+
+🦕 TIP: Collect hearts to restore lives!"
 horizontal_alignment = 1
 
 [node name="GotItButton" type="Button" parent="TutorialPanel/VBox"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "Got it! Let's Explore"
 
 [node name="SkipButton" type="Button" parent="TutorialPanel/VBox"]
+custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 text = "Skip Tutorial"

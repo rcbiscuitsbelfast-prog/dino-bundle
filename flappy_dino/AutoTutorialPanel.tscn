@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dr2e2bdxb21q6"]
 
-[ext_resource type="Script" path="res://flappy_dino/AutoTutorialPanel.gd" id="1"]
+[ext_resource type="Script" uid="uid://b5mf0d3ndgdmg" path="res://flappy_dino/AutoTutorialPanel.gd" id="1"]
 
 [node name="AutoTutorialPanel" type="CanvasLayer"]
 process_mode = 3
@@ -16,15 +16,16 @@ grow_vertical = 2
 color = Color(0, 0, 0, 0.75)
 
 [node name="Panel" type="Panel" parent="Overlay"]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -180.0
+offset_left = -136.0
 offset_top = -140.0
-offset_right = 180.0
-offset_bottom = 140.0
+offset_right = 132.0
+offset_bottom = 118.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -49,5 +50,6 @@ KEEP TAPPING TO FLY"
 horizontal_alignment = 1
 
 [node name="StartButton" type="Button" parent="Overlay/Panel/VBox"]
+custom_minimum_size = Vector2(5, 50)
 layout_mode = 2
 text = "START GAME"
