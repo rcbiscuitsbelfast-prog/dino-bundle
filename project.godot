@@ -20,6 +20,7 @@ AdManager="*res://shared/AdManager.gd"
 TouchInputHandler="*res://shared/TouchInputHandler.gd"
 SettingsManager="*res://shared/SettingsManager.gd"
 TutorialManager="*res://shared/TutorialManager.gd"
+DinoDB="*res://dino_explorer/DinoDB.gd"
 
 [display]
 

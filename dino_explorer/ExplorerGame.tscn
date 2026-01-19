@@ -37,12 +37,6 @@ var lives: int = 3
 var is_invincible: bool = false
 var nests: Array = []
 
-# Dino type list
-var dino_types = [
-    \"nico\", \"olaf\", \"doux\", \"kuro\", \"mort\", \"sena\",
-    \"loki\", \"cole\", \"tard\", \"kira\", \"vita\", \"mono\"
-]
-
 func _ready() -> void:
     AdManager.show_banner_ad()
     
