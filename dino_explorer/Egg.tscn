@@ -1,4 +1,28 @@
-[gd_scene format=3 uid="uid://egg"]
+[gd_scene load_steps=3 format=3 uid="uid://egg"]
+
+[ext_resource type="Texture2D" uid="uid://btpgpy7pjwu52" path="res://Assets/download/female/cole/egg/crack.png" id="1_y6d3e"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l7rh7"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"crack ",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_y6d3e")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Egg" type="Node2D"]
 
@@ -22,3 +46,8 @@ offset_top = 2.0
 offset_right = 7.0
 offset_bottom = 6.0
 color = Color(0.7, 0.7, 0.6, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(36, -1)
+sprite_frames = SubResource("SpriteFrames_l7rh7")
+animation = &"crack "
