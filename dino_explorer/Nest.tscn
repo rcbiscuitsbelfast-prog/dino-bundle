@@ -1,40 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://nest"]
-
-[ext_resource type="Texture2D" uid="uid://btpgpy7pjwu52" path="res://Assets/download/female/cole/egg/crack.png" id="1_tjsph"]
-[ext_resource type="Texture2D" uid="uid://6jyvsb1odvus" path="res://Assets/download/female/cole/egg/hatch.png" id="2_re8rt"]
-[ext_resource type="Texture2D" uid="uid://beu7crxw3av2y" path="res://Assets/download/female/cole/egg/move.png" id="3_utls6"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_aocyi"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_tjsph")
-}],
-"loop": true,
-"name": &"crack",
-"speed": 5.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_re8rt")
-}],
-"loop": true,
-"name": &"hatch",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_utls6")
-}],
-"loop": true,
-"name": &"move",
-"speed": 5.0
-}]
+[gd_scene load_steps=1 format=4 uid="uid://nest"]
 
 [node name="Nest" type="Node2D"]
 
@@ -45,14 +9,4 @@ offset_right = 30.0
 offset_bottom = 20.0
 color = Color(0.6, 0.4, 0.2, 1)
 
-[node name="Egg" type="ColorRect" parent="."]
-offset_left = -15.0
-offset_top = -15.0
-offset_right = 15.0
-offset_bottom = 15.0
-color = Color(0.9, 0.9, 0.8, 1)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Egg"]
-position = Vector2(51, 14)
-sprite_frames = SubResource("SpriteFrames_aocyi")
-animation = &"hatch"
+[node name="EggSlot" type="Node2D" parent="."]

@@ -14,8 +14,8 @@ script/source = "extends Node2D
 const TOTAL_DINOS = 24  # Total dinos to spawn at start
 const AGGRESSIVE_CHANCE = 0.2  # 20% aggressive, 80% nice
 const DAMAGE_COOLDOWN = 1.5  # Seconds of invincibility after hit
-const HATCH_INTERVAL_MIN = 180.0  # 3 minutes
-const HATCH_INTERVAL_MAX = 300.0  # 5 minutes
+
+const NEST_COUNT = 8
 
 @onready var player: CharacterBody2D = $Player
 @onready var score_label: Label = $UI/ScoreLabel
@@ -29,6 +29,7 @@ const HATCH_INTERVAL_MAX = 300.0  # 5 minutes
 var enemy_scene = preload(\"res://dino_explorer/Enemy.tscn\")
 var pet_scene = preload(\"res://dino_explorer/PetDino.tscn\")
 var nest_scene = preload(\"res://dino_explorer/Nest.tscn\")
+var egg_scene = preload(\"res://dino_explorer/Egg.tscn\")
 var tutorial_scene = preload(\"res://dino_explorer/ExplorerTutorial.tscn\")
 var remove_ads_dialog_scene = preload(\"res://shared/RemoveAdsDialog.tscn\")
 
@@ -52,8 +53,7 @@ func _ready() -> void:
 func start_game() -> void:
     spawn_fixed_dinos()
     spawn_nests()
-    hatch_timer.wait_time = randf_range(HATCH_INTERVAL_MIN, HATCH_INTERVAL_MAX)
-    hatch_timer.start()
+    hatch_timer.stop()
 
 func show_tutorial() -> void:
     var tutorial = tutorial_scene.instantiate()
@@ -95,7 +95,7 @@ func spawn_fixed_dinos() -> void:
 
 func spawn_nests() -> void:
     # Spawn nests at fixed positions
-    for i in range(8):
+    for i in range(NEST_COUNT):
         var nest = nest_scene.instantiate()
         var pos = Vector2(
             randf_range(200, 2200),
@@ -104,6 +104,37 @@ func spawn_nests() -> void:
         nest.position = pos
         nests_container.add_child(nest)
         nests.append(nest)
+        spawn_nest_egg(nest)
+
+func spawn_nest_egg(nest: Node2D) -> void:
+    var egg_parent: Node = nest.get_node_or_null(\"EggSlot\")
+    if egg_parent == null:
+        egg_parent = nest
+
+    for child in egg_parent.get_children():
+        if child.is_in_group(\"egg\"):
+            child.queue_free()
+
+    var egg = egg_scene.instantiate()
+
+    var random = DinoDB.get_random_dino()
+    egg.set_dino(random.name, random.gender)
+
+    egg.hatched.connect(_on_egg_hatched.bind(nest))
+    egg_parent.add_child(egg)
+    egg.position = Vector2.ZERO
+
+func _on_egg_hatched(dino: Node2D, nest: Node2D) -> void:
+    if dino.has_signal(\"petted\"):
+        dino.connect(\"petted\", Callable(self, \"_on_dino_petted\"))
+    dino.add_to_group(\"pet\")
+
+    var global_pos := dino.global_position
+    dino.reparent(dinos_container)
+    dino.global_position = global_pos
+
+    await get_tree().process_frame
+    spawn_nest_egg(nest)
 
 func _process(_delta: float) -> void:
     # Camera follows player
@@ -119,25 +150,8 @@ func _process(_delta: float) -> void:
                     break
 
 func _on_hatch_timer_timeout() -> void:
-    # Spawn new dino from random nest
-    if nests.size() > 0:
-        var random_nest = nests[randi() % nests.size()]
-        var is_aggressive = randf() < AGGRESSIVE_CHANCE
-        
-        if is_aggressive:
-            var enemy = enemy_scene.instantiate()
-            enemy.position = random_nest.position
-            enemy.set_player(player)
-            enemy.add_to_group(\"enemy\")
-            dinos_container.add_child(enemy)
-        else:
-            var pet = pet_scene.instantiate()
-            pet.position = random_nest.position
-            pet.petted.connect(_on_dino_petted)
-            pet.add_to_group(\"pet\")
-            dinos_container.add_child(pet)
-    
-    hatch_timer.wait_time = randf_range(HATCH_INTERVAL_MIN, HATCH_INTERVAL_MAX)
+    # Egg hatching is handled by Egg nodes.
+    pass
 
 func _on_dino_petted() -> void:
     dinos_petted += 1
@@ -182,7 +196,6 @@ func _on_watch_ad_pressed() -> void:
         update_lives_display()
         game_over_panel.visible = false
         get_tree().paused = false
-        hatch_timer.start()
 
 func _on_restart_pressed() -> void:
     get_tree().paused = false

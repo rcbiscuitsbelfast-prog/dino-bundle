@@ -1,53 +1,144 @@
-[gd_scene load_steps=3 format=3 uid="uid://egg"]
+[gd_scene load_steps=8 format=4 uid="uid://egg"]
 
-[ext_resource type="Texture2D" uid="uid://btpgpy7pjwu52" path="res://Assets/download/female/cole/egg/crack.png" id="1_y6d3e"]
+[ext_resource type="Script" path="res://dino_explorer/Egg.gd" id="1_egg_script"]
+[ext_resource type="Texture2D" uid="uid://beu7crxw3av2y" path="res://Assets/download/female/cole/egg/move.png" id="2_egg_move"]
+[ext_resource type="Texture2D" uid="uid://btpgpy7pjwu52" path="res://Assets/download/female/cole/egg/crack.png" id="3_egg_crack"]
+[ext_resource type="Texture2D" uid="uid://6jyvsb1odvus" path="res://Assets/download/female/cole/egg/hatch.png" id="4_egg_hatch"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_l7rh7"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_egg"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_egg_move")
+}],
 "loop": true,
-"name": &"crack ",
+"name": &"move",
 "speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_y6d3e")
-}, {
-"duration": 1.0,
-"texture": null
-}, {
-"duration": 1.0,
-"texture": null
+"texture": ExtResource("3_egg_crack")
 }],
 "loop": true,
-"name": &"default",
+"name": &"crack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_egg_hatch")
+}],
+"loop": true,
+"name": &"hatch",
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_idle_bob"]
+resource_name = "idle_bob"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -10), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_crack"]
+resource_name = "crack"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.8, 0.7, 0.5, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.45, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.034906585, 0.034906585, -0.034906585, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_hatch_burst"]
+resource_name = "hatch_burst"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.9, 0.9), Vector2(1.3, 1.3), Vector2(1.5, 1.5), Vector2(1.5, 1.5)]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.8), Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+
 [node name="Egg" type="Node2D"]
-
-[node name="EggBody" type="ColorRect" parent="."]
-offset_left = -12.0
-offset_top = -15.0
-offset_right = 12.0
-offset_bottom = 15.0
-color = Color(0.9, 0.9, 0.8, 1)
-
-[node name="EggSpot1" type="ColorRect" parent="."]
-offset_left = -5.0
-offset_top = -8.0
-offset_right = -1.0
-offset_bottom = -4.0
-color = Color(0.7, 0.7, 0.6, 1)
-
-[node name="EggSpot2" type="ColorRect" parent="."]
-offset_left = 3.0
-offset_top = 2.0
-offset_right = 7.0
-offset_bottom = 6.0
-color = Color(0.7, 0.7, 0.6, 1)
+script = ExtResource("1_egg_script")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(36, -1)
-sprite_frames = SubResource("SpriteFrames_l7rh7")
-animation = &"crack "
+sprite_frames = SubResource("SpriteFrames_egg")
+animation = &"move"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("..")
+anims/idle_bob = SubResource("Animation_idle_bob")
+anims/crack = SubResource("Animation_crack")
+anims/hatch_burst = SubResource("Animation_hatch_burst")
